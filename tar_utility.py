@@ -41,6 +41,23 @@ def create_tar(tarfile_dest, root_dir, tar_file):
 
 
 
+def extract_tar(root_dir, tar_file):
+	'''
+	Extract tar file inside root dir
+	'''
+
+	try:
+		logging.info('Extract tar file {} into {} directory'.format(tar_file, root_dir))	
+		tar = tarfile.open(tar_file)
+		tar.extractall(path=root_dir)
+		tar.close()
+	except OSError as e:
+		print e
+	except IOError as e:
+		print e
+
+
+
 if __name__ == '__main__':
 
 	logging.basicConfig(filename='tar_events.log', level=logging.DEBUG)
@@ -48,9 +65,10 @@ if __name__ == '__main__':
 	# Test with fake directory
 	# create_tar('/tmp/jira-installdir.tar.gz','/opt/atlassian','bogus')
 
-	create_tar('/tmp/jira-installdir.tar.gz','/opt/atlassian','jira')
+	# create_tar('/tmp/jira-installdir.tar.gz','/opt/atlassian','jira')
 
 
+	extract_tar('/var/tmp', '/tmp/jira-installdir.tar.gz')
 
 
 
