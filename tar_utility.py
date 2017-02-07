@@ -5,6 +5,10 @@ import tarfile, os, logging
 
 
 
+
+def check_if_exists(tarfile_dest):
+	return os.path.isfile(tarfile_dest)
+
 '''
 Example:
 Create tar files from:
@@ -18,6 +22,13 @@ def create_tar(tarfile_dest, root_dir, tar_file):
 	'''
 	Create a tar file
 	'''
+
+	if check_if_exists(tarfile_dest):
+		log_str = '{} already exists'.format(tarfile_dest)
+		logging.info(log_str)
+		print log_str
+		return None
+
 	
 	logging.info('Creating tar file for {} in root dir {} and stre in {}'.format(tar_file, root_dir, tarfile_dest))		
 	with tarfile.open(tarfile_dest, 'w:gz') as tar:
@@ -37,7 +48,7 @@ if __name__ == '__main__':
 	# Test with fake directory
 	# create_tar('/tmp/jira-installdir.tar.gz','/opt/atlassian','bogus')
 
-
+	create_tar('/tmp/jira-installdir.tar.gz','/opt/atlassian','jira')
 
 
 
