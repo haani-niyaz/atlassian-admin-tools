@@ -31,7 +31,7 @@ def create_tar(tarfile_dest, root_dir, tar_dir):
 
 if __name__ == '__main__':
 
-
+	logging.basicConfig(filename='tar_events.log', level=logging.DEBUG)
 
 
 
