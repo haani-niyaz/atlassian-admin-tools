@@ -1,1 +1,3 @@
 tar_events.log
+sample.log
+*.pyc
