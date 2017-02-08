@@ -6,11 +6,11 @@ How to log to file and standard output
 
 import logging
 
-logger = logging.getLogger('multi_logging')
+logger = logging.getLogger('atlassian-admin-tools')
 logger.setLevel(logging.DEBUG)
 
 # Create a file handler which logs DEBUG messages
-file_handler = logging.FileHandler('sample.log')
+file_handler = logging.FileHandler('tar_events.log')
 file_handler.setLevel(logging.DEBUG)
 
 # Create a console handler with a higher log level
@@ -31,7 +31,7 @@ logger.addHandler(console_handler)
 
 if __name__ == '__main__':
 
-	# 'application' code
+
 	logger.debug('debug message')
 	logger.info('info message')
 	logger.warn('warn message')
