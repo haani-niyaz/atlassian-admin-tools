@@ -31,9 +31,8 @@ logger.addHandler(console_handler)
 
 if __name__ == '__main__':
 
-
-	logger.debug('debug message')
-	logger.info('info message')
-	logger.warn('warn message')
-	logger.error('error message')
-	logger.critical('critical message')
+    logger.debug('debug message')
+    logger.info('info message')
+    logger.warn('warn message')
+    logger.error('error message')
+    logger.critical('critical message')
