@@ -13,18 +13,14 @@ def log():
 def check_if_exists(tarfile_dest):
     return os.path.isfile(tarfile_dest)
 
-'''
-Example:
-Create tar files from:
-1. Install directory /opt/atlassian/jira
-2. Home directory /mnt/jira/jira-home
-3. Temp directory /mnt/jira/jira-temp
-'''
-
-
 def create_tar(tarfile_dest, root_dir, tar_file):
     '''
-    Create a tar file
+    Create tar file
+
+    Args:
+    @tarfile_dest: tarfile name and path for storage
+    @root_dir    : source file parent dir
+    @tar_file    : source file (file/dir to tar)
     '''
 
     if check_if_exists(tarfile_dest):
