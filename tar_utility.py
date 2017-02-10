@@ -39,7 +39,7 @@ def create_tar(tarfile_dest, root_dir, tar_file):
         os.chdir(root_dir)
         try:
             tar.add(tar_file)
-            log.info('Tar file creation successful')
+            log().info('Tar file creation successful')
         except OSError as e:
             log().error('Tar file creation failed with error: ' + str(e))
             log()
