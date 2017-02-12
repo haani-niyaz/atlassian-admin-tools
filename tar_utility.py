@@ -42,15 +42,15 @@ def create_tar(tarfile_dest, root_dir, tar_file):
             print e
 
 
-def extract_tar(root_dir, tar_file):
+def extract_tar(dest_dir, tar_file):
     '''
-    Extract tar file inside root dir
+    Extract tar file inside dest dir
     '''
 
     try:
-        log().info('Extract tar file {} into {} directory'.format(tar_file, root_dir))
+        log().info('Extract tar file {} into {} directory'.format(tar_file, dest_dir))
         tar = tarfile.open(tar_file)
-        tar.extractall(path=root_dir)
+        tar.extractall(path=dest_dir)
         tar.close()
     except OSError as e:
         print e
@@ -66,4 +66,4 @@ if __name__ == '__main__':
     tar_utility.create_tar('/tmp/jira-installdir.tar.gz',
                            '/opt/atlassian', 'jira')
 
-    # extract_tar('/var/tmp', '/tmp/jira-installdir.tar.gz')
+    tar_utility.extract_tar('/var/tmp', '/tmp/jira-installdir.tar.gz')
