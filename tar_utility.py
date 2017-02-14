@@ -4,7 +4,6 @@ import tarfile
 import os
 import logging
 
-
 def log():
     logger = logging.getLogger('atlassian-admin-tools')
     return logger
@@ -63,7 +62,7 @@ if __name__ == '__main__':
     # Test with fake directory
     # create_tar('/tmp/jira-installdir.tar.gz','/opt/atlassian','bogus')
 
-    tar_utility.create_tar('/tmp/jira-installdir.tar.gz',
-                           '/opt/atlassian', 'jira')
+    # create_tar('/tmp/jira-installdir.tar.gz',
+    #                        '/opt/atlassian', 'jira')
+    # extract_tar('/var/tmp', '/tmp/jira-installdir.tar.gz')
 
-    tar_utility.extract_tar('/var/tmp', '/tmp/jira-installdir.tar.gz')
