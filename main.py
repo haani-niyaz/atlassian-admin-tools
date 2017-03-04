@@ -10,6 +10,6 @@ if __name__ == '__main__':
     # create_tar('/tmp/jira-installdir.tar.gz','/opt/atlassian','bogus')
 
     tar_utility.create_tar('/tmp/jira-installdir.tar.gz',
-                           '/opt/atlassian', 'jira')
+                          '/opt/atlassian', 'jira')
 
-    # extract_tar('/var/tmp', '/tmp/jira-installdir.tar.gz')
+    tar_utility.extract_tar('/var/tmp', '/tmp/jira-installdir.tar.gz')
