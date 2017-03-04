@@ -37,7 +37,6 @@ def create_tar(tarfile_dest, root_dir, tar_file):
             log().info('Tar file creation successful')
         except OSError as e:
             log().error('Tar file creation failed with error: ' + str(e))
-            log()
             print e
 
 
@@ -58,11 +57,11 @@ def extract_tar(dest_dir, tar_file):
 
 
 if __name__ == '__main__':
-
+    pass
+    
     # Test with fake directory
     # create_tar('/tmp/jira-installdir.tar.gz','/opt/atlassian','bogus')
 
     # create_tar('/tmp/jira-installdir.tar.gz',
     #                        '/opt/atlassian', 'jira')
     # extract_tar('/var/tmp', '/tmp/jira-installdir.tar.gz')
-
