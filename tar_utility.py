@@ -52,8 +52,10 @@ def extract_tar(dest_dir, tar_file):
         tar.close()
     except OSError as e:
         print e
+        log().error('Tar file extraction failed with error: ' + str(e))
     except IOError as e:
         print e
+        log().error('Tar file extraction failed with error: ' + str(e))
 
 
 if __name__ == '__main__':
