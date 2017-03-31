@@ -3,6 +3,7 @@
 import tarfile
 import os
 import logging
+import string
 
 def log():
     logger = logging.getLogger('atlassian-admin-tools')
@@ -23,47 +24,44 @@ def create_tar(tarfile_dest, root_dir, tar_file):
     '''
 
     if check_if_exists(tarfile_dest):
-        log_str = '{} already exists'.format(tarfile_dest)
-        log().warn(log_str)
-        # print log_str
+        # log_str = string.Template('$tarfile_dest already exists')
+        # log().warn(log_str.substitute({'tarfile_dest': tarfile_dest }))
+        log().warn("%s already exists" % tarfile_dest)
         return None
 
-    log().info('Creating tar file for {} in root dir {} and store in {}'.format(
-        tar_file, root_dir, tarfile_dest))
-    with tarfile.open(tarfile_dest, 'w:gz') as tar:
-        os.chdir(root_dir)
-        try:
-            tar.add(tar_file)
-            log().info('Tar file creation successful')
-        except OSError as e:
-            log().error('Tar file creation failed with error: ' + str(e))
-            print e
+    # log().info('Creating tar file for {} in root dir {} and store in {}'.format(
+        # tar_file, root_dir, tarfile_dest))
+
+    os.chdir(root_dir)    
+
+    try:
+        tar = tarfile.open(tarfile_dest, 'w:gz')
+        tar.add(tar_file)
+        log().info('Tar file creation successful')
+    except OSError, e:
+        log().error('Tar file creation failed with error: ' + str(e))
+        print e
 
 
 def extract_tar(dest_dir, tar_file):
     '''
     Extract tar file inside dest dir
     '''
-
     try:
-        log().info('Extract tar file {} into {} directory'.format(tar_file, dest_dir))
-        tar = tarfile.open(tar_file)
-        tar.extractall(path=dest_dir)
+        # log().info('Extract tar file {} into {} directory'.format(tar_file, dest_dir))
+        tar = tarfile.open(tar_file,'r:gz')
+        for item in tar:
+            print item
+            tar.extract(item, path=dest_dir)
         tar.close()
-    except OSError as e:
+    except OSError, e:
         print e
-        log().error('Tar file extraction failed with error: ' + str(e))
-    except IOError as e:
+        # log().error('Tar file extraction failed with error: ' + str(e))
+    except IOError, e:
         print e
-        log().error('Tar file extraction failed with error: ' + str(e))
+        # log().error('Tar file extraction failed with error: ' + str(e))
 
 
 if __name__ == '__main__':
     pass
     
-    # Test with fake directory
-    # create_tar('/tmp/jira-installdir.tar.gz','/opt/atlassian','bogus')
-
-    # create_tar('/tmp/jira-installdir.tar.gz',
-    #                        '/opt/atlassian', 'jira')
-    # extract_tar('/var/tmp', '/tmp/jira-installdir.tar.gz')
