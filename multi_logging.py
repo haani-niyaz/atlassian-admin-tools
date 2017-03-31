@@ -10,7 +10,7 @@ logger = logging.getLogger('atlassian-admin-tools')
 logger.setLevel(logging.DEBUG)
 
 # Create a file handler which logs DEBUG messages
-file_handler = logging.FileHandler('tar_events.log')
+file_handler = logging.FileHandler('/var/tmp/tar_events.log')
 file_handler.setLevel(logging.DEBUG)
 
 # Create a console handler with a higher log level
