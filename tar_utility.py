@@ -13,30 +13,28 @@ def log():
 def check_if_exists(tarfile_dest):
     return os.path.isfile(tarfile_dest)
 
-def create_tar(tarfile_dest, root_dir, tar_file):
+
+def create_tar(dest_dir, parent_dir, backup_dir):
     '''
     Create tar file
 
     Args:
-    @tarfile_dest: tarfile name and path for storage
-    @root_dir    : source file parent dir
-    @tar_file    : source file (file/dir to tar)
+    @dest_dir    : tarfile name and path for storage
+    @parent_dir  : source file parent dir
+    @backup_dir  : source file (file/dir to tar)
     '''
 
-    if check_if_exists(tarfile_dest):
-        # log_str = string.Template('$tarfile_dest already exists')
-        # log().warn(log_str.substitute({'tarfile_dest': tarfile_dest }))
-        log().warn("%s already exists" % tarfile_dest)
+    if check_if_exists(dest_dir):
+        log().warn("%s already exists" % dest_dir)
         return None
 
-    # log().info('Creating tar file for {} in root dir {} and store in {}'.format(
-        # tar_file, root_dir, tarfile_dest))
+    log().info("Creating %s from %s/%s" % (dest_dir, parent_dir, backup_dir))
 
-    os.chdir(root_dir)    
+    os.chdir(parent_dir)    
 
     try:
-        tar = tarfile.open(tarfile_dest, 'w:gz')
-        tar.add(tar_file)
+        tar = tarfile.open(dest_dir, 'w:gz')
+        tar.add(backup_dir)
         log().info('Tar file creation successful')
     except OSError, e:
         log().error('Tar file creation failed with error: ' + str(e))
@@ -48,7 +46,7 @@ def extract_tar(dest_dir, tar_file):
     Extract tar file inside dest dir
     '''
     try:
-        # log().info('Extract tar file {} into {} directory'.format(tar_file, dest_dir))
+        log().info("Extract tar file %s into %s directory".format(tar_file, dest_dir))
         tar = tarfile.open(tar_file,'r:gz')
         for item in tar:
             print item
@@ -56,10 +54,10 @@ def extract_tar(dest_dir, tar_file):
         tar.close()
     except OSError, e:
         print e
-        # log().error('Tar file extraction failed with error: ' + str(e))
+        log().error('Tar file extraction failed with error: ' + str(e))
     except IOError, e:
         print e
-        # log().error('Tar file extraction failed with error: ' + str(e))
+        log().error('Tar file extraction failed with error: ' + str(e))
 
 
 if __name__ == '__main__':
