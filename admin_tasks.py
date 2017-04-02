@@ -10,6 +10,7 @@ import urllib2
 import logging
 import subprocess
 import pwd
+import re
 
 log = logging.getLogger('atlassian-admin-tools')
 
@@ -63,7 +64,14 @@ def download(url,path):
 
 
 def get_process(name):
-	return subprocess.Popen(['ps', 'ww', '-fC', name], stdout=subprocess.PIPE).communicate()[0]
+	p  = subprocess.Popen("ps -fC " + name,shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	output = p.communicate()[0]
+	if re.search(name,output):
+		return output
+	return False
+
+def get_file_details(path):
+	return subprocess.Popen(['ls', '-lah', path], stdout=subprocess.PIPE).communicate()[0]
 
 
 if __name__ == '__main__':
