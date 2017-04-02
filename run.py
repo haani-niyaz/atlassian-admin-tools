@@ -19,9 +19,10 @@ if __name__ == '__main__':
 		log.error('Unable to read yaml file: ' + str(e))
 	else:
 
-		# Create backup path
+
 
 		backup_working_dir = config['base_backup_dir'] +'/'+ config['CRQ']
+		temp_dir = config['temp_dir']
 		
 		if admin_tasks.make_dirs(backup_working_dir):
 			admin_tasks.set_ownership(backup_working_dir)
@@ -39,7 +40,8 @@ if __name__ == '__main__':
 					dest_file,
 					data['parent_dir'],
 					data['backup_dir'])
-
+				# admin_tasks.set_ownership(dest_file)
+				log.info("File Details: %s " % admin_tasks.get_file_details(dest_file))
 
 		for download_metadata in config['downloads']:
 			for link in download_metadata.itervalues():
@@ -49,16 +51,16 @@ if __name__ == '__main__':
 
 					if admin_tasks.download(link,config['temp_dir']):				
 						admin_tasks.set_ownership(file_path)
+						log.info("File details: %s " % admin_tasks.get_file_details(file_path))
 
 		# Check process 
-		ps_result = admin_tasks.get_process('sshd')
+		ps_output = admin_tasks.get_process('sshd')
 
-		if ps_result:
+		if ps_output:
 			log.debug('Getting application process data')
-			print(ps_result)
-			log.info('Application prcoess is running')
+			log.info(ps_output)
+			log.info('Application process is running')
 		else:
 			log.error('Application process is not running')
-
 
 
