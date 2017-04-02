@@ -51,7 +51,7 @@ if __name__ == '__main__':
 						admin_tasks.set_ownership(file_path)
 
 		# Check process 
-		ps_result = admin_tasks.show_process('sshd')
+		ps_result = admin_tasks.get_process('sshd')
 
 		if ps_result:
 			log.debug('Getting application process data')
