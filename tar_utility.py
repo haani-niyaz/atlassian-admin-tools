@@ -25,14 +25,14 @@ def create_tar(dest_file, parent_dir, backup_dir):
         log.warn("%s already exists" % dest_file)
         return None
 
-    log.info("Creating %s from %s/%s" % (dest_file, parent_dir, backup_dir))
+    log.info("Creating tar %s from %s/%s" % (dest_file, parent_dir, backup_dir))
 
     os.chdir(parent_dir)    
 
     try:
         tar = tarfile.open(dest_file, 'w:gz')
         tar.add(backup_dir)
-        log.info('Tar file creation successful')
+        log.info("%s creation successful" % dest_file)
     except OSError, e:
         log.error('Tar file creation failed with error: ' + str(e))
         print e
