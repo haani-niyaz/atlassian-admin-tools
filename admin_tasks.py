@@ -62,7 +62,7 @@ def download(url,path):
 	return False
 
 
-def show_process(name):
+def get_process(name):
 	return subprocess.Popen(['ps', 'ww', '-fC', name], stdout=subprocess.PIPE).communicate()[0]
 
 
