@@ -1,5 +1,9 @@
 #! /usr/bin/env python
 
+'''
+Admin tasks to run as sudo
+'''
+
 import os
 import errno
 import urllib2

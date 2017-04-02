@@ -1,5 +1,9 @@
 #! /usr/bin/env python
 
+'''
+Tarfile operations
+'''
+
 import tarfile
 import os
 import logging
