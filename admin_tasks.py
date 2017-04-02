@@ -25,6 +25,14 @@ def make_dirs(dirs):
 			raise
 
 	return False
+	
+
+def change_user(user='proteus'):
+	uid = pwd.getpwnam(user).pw_uid
+	gid = pwd.getpwnam(user).pw_gid
+	os.setegid(uid)
+	os.seteuid(gid)
+	log.debug("Running commands as %s" % user)
 
 
 def set_ownership(path,user='proteus'):
