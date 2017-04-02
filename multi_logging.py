@@ -1,10 +1,12 @@
 #! /usr/bin/env python
 
 '''
-How to log to file and standard output
+Logging to file and standard output
 '''
 
 import logging
+import admin_tasks
+import tar_utility
 
 logger = logging.getLogger('atlassian-admin-tools')
 logger.setLevel(logging.DEBUG)
