@@ -21,6 +21,13 @@ def make_dirs(dirs):
 
 	return False
 
+def set_ownership(path,user='proteus'):
+	uid = pwd.getpwnam(user).pw_uid
+	gid = pwd.getpwnam(user).pw_gid
+
+	log.info("Setting %s ownership to %s:%s " % (path,user,user))
+	os.chown(path,uid,gid)
+
 
 if __name__ == '__main__':
 	pass
