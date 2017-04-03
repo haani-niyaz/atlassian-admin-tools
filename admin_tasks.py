@@ -72,7 +72,7 @@ def download(url,path):
 
 
 def get_process(name):
-	cmd = "/bin/bash -c \"ps -ef | grep -v grep | grep %s\" " % name
+	cmd = "/bin/bash -c \"ps -ef | grep -v grep | grep java | grep %s \" " % name
 	p  = subprocess.Popen(cmd , shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	output = p.communicate()[0]
 	# Wait for process to terminate before getting return code
