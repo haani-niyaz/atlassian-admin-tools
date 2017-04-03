@@ -11,13 +11,14 @@ class Backup(object):
 		self.backups 			= config['backups']
 		self.downloads          = config['downloads']
 		self.log 				= log
+		self.files_downloaded   = []
+		self.files_backed_up    = []
 
 
 	def create_backup_dir(self):
 		if admin_tasks.make_dirs(self.backup_working_dir):
 			admin_tasks.set_ownership(self.backup_working_dir)	
 			
-
 
 	def backup_app(self):
 		
@@ -29,7 +30,8 @@ class Backup(object):
 					dest_file,
 					data['parent_dir'],
 					data['backup_dir'])
-				
+				self.files_backed_up.append(dest_file)
+
 				if self.log: self.log.info("File Details: %s " % admin_tasks.get_file_details(dest_file))		
 
 
@@ -41,7 +43,8 @@ class Backup(object):
 			
 				if link:
 					file_path = self.temp_dir + '/' + admin_tasks.get_filename(link)
-					admin_tasks.download(link,self.temp_dir)				
+					admin_tasks.download(link,self.temp_dir)
+					self.files_downloaded.append(file_path)				
 					if self.log: self.log.info("File details: %s " % admin_tasks.get_file_details(file_path))
 
 
