@@ -25,15 +25,13 @@ if __name__ == '__main__':
 	backup.backup_app()
 	backup.download_files()
 
-	sys.exit()		
-
 	# Check process 
-	ps_output = admin_tasks.get_process('sshd')
+	ps_output = admin_tasks.get_process('jira')
 
 	if ps_output:
 		log.debug('Getting application process data')
-		log.info(ps_output)
 		log.info('Application process is running')
+		print("Process output: \n" + ps_output)
 	else:
 		log.error('Application process is not running')
 
