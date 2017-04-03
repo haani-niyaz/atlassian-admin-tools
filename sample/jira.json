@@ -1,0 +1,35 @@
+{
+   "CRQ": "CHANGEXXXXX",
+   "base_backup_dir": "/opt/backup",
+   "downloads": [
+      {
+         "tar_file": "https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war"
+      },
+      {
+         "mysql_connector": "http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.40/mysql-connector-java-5.1.40.jar"
+      },
+      {
+         "jre": null
+      }
+   ],
+   "file_name": "atlassian-jira-software-7.3.0-x64.bin",
+   "temp_dir": "/var/tmp",
+
+   "backups": [
+      {
+         "install": {
+            "tar_file": "jira-installdir.tar.gz",
+            "parent_dir": "/opt",
+            "backup_dir": "jira"
+         }
+      },
+      {
+         "home": {
+            "tar_file": "jira-home.tar.gz",
+            "parent_dir": "/var/tmp",
+            "backup_dir": "jira-home"
+         }
+      }
+   ]
+}
+
