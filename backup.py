@@ -18,12 +18,13 @@ class Backup(object):
 	def create_backup_dir(self):
 		if admin_tasks.make_dirs(self.backup_working_dir):
 			admin_tasks.set_ownership(self.backup_working_dir)	
-			
+
 
 	def backup_app(self):
 		
-		for backup_metadata in self.backups:
+		for index, backup_metadata in enumerate(self.backups):
 			for data in backup_metadata.itervalues():
+				self.log.info("Backing up %s of %s.." % (index+1,len(self.backups)))
 				
 				dest_file = self.backup_working_dir + '/' + data['tar_file']
 				tar_utility.create_tar(
@@ -40,7 +41,6 @@ class Backup(object):
 
 		for download_metadata in self.downloads:
 			for link in download_metadata.itervalues():
-			
 				if link:
 					file_path = self.temp_dir + '/' + admin_tasks.get_filename(link)
 					admin_tasks.download(link,self.temp_dir)
