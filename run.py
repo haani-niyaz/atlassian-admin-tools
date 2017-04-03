@@ -35,4 +35,13 @@ if __name__ == '__main__':
 	else:
 		log.error('Application process is not running')
 
+	log.debug(" [SUMMARY] ")
+	for file_path in backup.files_downloaded:
+		log.info(admin_tasks.get_file_details(file_path))
+
+	for file_path in backup.files_backed_up:
+		log.info(admin_tasks.get_file_details(file_path))
+
+
+
 
