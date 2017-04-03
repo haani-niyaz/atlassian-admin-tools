@@ -32,7 +32,7 @@ def change_user(user='proteus'):
 	gid = pwd.getpwnam(user).pw_gid
 	os.setegid(uid)
 	os.seteuid(gid)
-	log.debug("Running commands as %s" % user)
+	log.debug("Running commands as %s user" % user)
 
 
 def set_ownership(path,user='proteus'):
