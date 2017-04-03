@@ -72,7 +72,8 @@ def download(url,path):
 
 
 def get_process(name):
-	p  = subprocess.Popen("ps -fC " + name,shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+	cmd = "ps -ef | grep -v grep | grep %s " % name
+	p  = subprocess.Popen("ps -ef | grep " + name ,shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 	output = p.communicate()[0]
 	if re.search(name,output):
 		return output
