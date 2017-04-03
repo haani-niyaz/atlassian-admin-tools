@@ -71,19 +71,27 @@ def download(url,path):
 	return False
 
 
-def get_process(name):
-	cmd = "/bin/bash -c \"ps -ef | grep -v grep | grep java | grep %s \" " % name
-	p  = subprocess.Popen(cmd , shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+
+def run_cmd(cmd):
+	p  = subprocess.Popen(cmd , shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE) 
 	output = p.communicate()[0]
 	# Wait for process to terminate before getting return code
 	p.wait()
 	if p.returncode == 0:
-		return output
+		return output.rstrip()
 	return False
 
-def get_file_details(path):
-	return subprocess.Popen(['ls', '-lah', path], stdout=subprocess.PIPE).communicate()[0].rstrip()
+def get_process(name):
+	cmd = "/bin/bash -c \"ps -ef | grep -v grep | grep java | grep %s \" " % name
+	run_cmd(cmd)
 
+def get_file_details(path):
+	cmd  = "ls -lah %s" % path
+	return run_cmd(cmd)
+
+def manage_service(name,operation):
+	cmd = "/bin/bash -c  \"/sbin/service %s %s \" " % (name,operation)
+	return run_cmd(cmd)
 
 if __name__ == '__main__':
 	pass
