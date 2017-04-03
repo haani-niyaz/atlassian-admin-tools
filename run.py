@@ -4,47 +4,28 @@ import admin_tasks
 import logging
 import tar_utility
 import multi_logging
-import core
+import settings
+import sys
+import backup
+
 
 if __name__ == '__main__':
 
-	log = logging.getLogger('atlassian-admin-tools')
-	config = core.get_config('jira')
-
-	backup_working_dir = config['base_backup_dir'] +'/'+ config['CRQ']
-	temp_dir = config['temp_dir']
+	log 	= logging.getLogger('atlassian-admin-tools')
+	config  = settings.get_config('jira')
+	backup  = backup.Backup(config,log)
 	
-	if admin_tasks.make_dirs(backup_working_dir):
-		admin_tasks.set_ownership(backup_working_dir)
 
-	# Backup directories
-
-	log.debug("Backup working directory is %s" % backup_working_dir)
+	backup.create_backup_dir()
+	log.debug("Backup working directory is %s" % backup.backup_working_dir)
 
 	# Drop privileges to 'proteus' user
 	admin_tasks.change_user()
 
-	for backup_metadata in config['backups']:
-		for data in backup_metadata.itervalues():
-			
-			dest_file = backup_working_dir + '/' + data['tar_file']
-			tar_utility.create_tar(
-				dest_file,
-				data['parent_dir'],
-				data['backup_dir'])
-			
-			log.info("File Details: %s " % admin_tasks.get_file_details(dest_file))
+	backup.backup_app()
+	backup.download_files()
 
-	# Drop privileges to 'root' user		
-	# admin_tasks.change_user('root')		
-			
-	for download_metadata in config['downloads']:
-		for link in download_metadata.itervalues():
-			
-			if link:
-				file_path = config['temp_dir'] + '/' + 	admin_tasks.get_filename(link)
-				admin_tasks.download(link,config['temp_dir'])				
-				log.info("File details: %s " % admin_tasks.get_file_details(file_path))
+	sys.exit()		
 
 	# Check process 
 	ps_output = admin_tasks.get_process('sshd')
