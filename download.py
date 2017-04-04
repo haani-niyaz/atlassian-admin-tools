@@ -18,7 +18,6 @@ class Download(object):
 					count += 1
 		return count
 
-
 	def download_files(self):
 		count = self.count_active_download_items(self.downloads)
 
@@ -30,7 +29,6 @@ class Download(object):
 					admin_tasks.download(link,self.temp_dir)
 					self.files_downloaded.append(file_path)				
 					if self.log: self.log.info("File details: %s " % admin_tasks.get_file_details(file_path))
-
 
 	def summary(self):
 		self.log.debug("-- Download Summary --")

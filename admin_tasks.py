@@ -34,7 +34,6 @@ def change_user(user='proteus'):
 	os.seteuid(gid)
 	log.debug("Running commands as %s user" % user)
 
-
 def set_ownership(path,user='proteus'):
 	uid = pwd.getpwnam(user).pw_uid
 	gid = pwd.getpwnam(user).pw_gid
@@ -42,10 +41,8 @@ def set_ownership(path,user='proteus'):
 	log.info("Setting %s ownership to %s:%s " % (path,user,user))
 	os.chown(path,uid,gid)
 
-
 def get_filename(url):
 	return os.path.basename(url)
-
 
 def download(url,path):
 	
@@ -69,8 +66,6 @@ def download(url,path):
 		log.warn("%s already exists." % file_name)
 
 	return False
-
-
 
 def run_cmd(cmd):
 	p  = subprocess.Popen(cmd , shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE) 

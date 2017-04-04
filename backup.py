@@ -14,11 +14,9 @@ class Backup(object):
 		self.files_downloaded   = []
 		self.files_backed_up    = []
 
-
 	def create_backup_dir(self):
 		if admin_tasks.make_dirs(self.backup_working_dir):
 			admin_tasks.set_ownership(self.backup_working_dir)	
-
 
 	def backup_app(self):
 		
