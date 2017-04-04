@@ -44,7 +44,7 @@ if __name__ == '__main__':
 				backup   = Backup(config,log)
 				backup.create_backup_dir()
 				log.debug("Backup working directory is %s" % backup.backup_working_dir)
-
+				log.debug("Shutting down %s application" % app_name)
 				cmd_output = admin_tasks.manage_service(app_name,'stop')
 				if cmd_output:
 						log.debug('Getting application process data')
@@ -68,9 +68,9 @@ if __name__ == '__main__':
 		
 
 		elif options.process:
+			log.debug('Getting application process data')
 			cmd_output = admin_tasks.get_process(app_name)
 			if cmd_output:
-				log.debug('Getting application process data')
 				log.info('Application process is running')
 				print("Command output: \n" + cmd_output)
 			else:
