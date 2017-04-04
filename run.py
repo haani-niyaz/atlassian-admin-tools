@@ -16,9 +16,9 @@ if __name__ == '__main__':
 	usage = '''
 	%prog --app <jira|bamboo|bitbucket|crowd> --file <filename>.json [options] 
 
-	Backup Example:
-	%prog --app jira --config /tmp/jira.json -b -s
-
+	Backup Example
+	--------------
+	%prog --app jira --config /tmp/jira.json -bs
 	'''
 	parser = OptionParser(usage=usage)
 
