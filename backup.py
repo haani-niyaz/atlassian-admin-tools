@@ -35,22 +35,11 @@ class Backup(object):
 
 				if self.log: self.log.info("File Details: %s " % admin_tasks.get_file_details(dest_file))		
 
-
 	def summary(self):
+		self.log.debug("-- SUMMARY --")
 
 		for file_path in self.files_backed_up:
 			self.log.info(admin_tasks.get_file_details(file_path))
-
-	
-	def download_files(self):
-
-		for download_metadata in self.downloads:
-			for link in download_metadata.itervalues():
-				if link:
-					file_path = self.temp_dir + '/' + admin_tasks.get_filename(link)
-					admin_tasks.download(link,self.temp_dir)
-					self.files_downloaded.append(file_path)				
-					if self.log: self.log.info("File details: %s " % admin_tasks.get_file_details(file_path))
 
 
 if __name__ == '__main__':
