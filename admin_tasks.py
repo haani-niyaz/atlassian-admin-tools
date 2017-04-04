@@ -83,7 +83,7 @@ def run_cmd(cmd):
 
 def get_process(name):
 	cmd = "/bin/bash -c \"ps -ef | grep -v grep | grep java | grep %s \" " % name
-	run_cmd(cmd)
+	return run_cmd(cmd)
 
 def get_file_details(path):
 	cmd  = "ls -lah %s" % path
