@@ -36,7 +36,7 @@ class Backup(object):
 				if self.log: self.log.info("File Details: %s " % admin_tasks.get_file_details(dest_file))		
 
 
-		def summary(self):
+	def summary(self):
 
 		for file_path in self.files_backed_up:
 			self.log.info(admin_tasks.get_file_details(file_path))
