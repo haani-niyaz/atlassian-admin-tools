@@ -7,7 +7,6 @@ import multi_logging
 import settings
 import sys
 from optparse import OptionParser
-import setting
 from backup import Backup
 from download import Download
 
@@ -65,7 +64,7 @@ if __name__ == '__main__':
 				download = Download(config,log)
 				download.download_files()
 				download.summary()
-				
+
 		
 
 		elif options.process:
