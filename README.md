@@ -8,8 +8,9 @@
     * [Setup requirements](#setup-requirements)
     * [Beginning with [atlassian-admin-tools]](#beginning-with-atlassian-admin-tools)
 3. [Usage - Configuration options and additional functionality](#usage)
-4. [Limitations - OS compatibility, etc.](#limitations)
-5. [Development - Guide for contributing to the module](#development)
+4. [Reference](#reference)
+5. [Limitations](#limitations)
+6. [Development - Guide for contributing to the module](#development)
 
 
 ## Description
@@ -23,7 +24,7 @@ Provide an utility to to execute deployment pre-checks and pre-implementation st
 - Executes commands as the application user
 - Backup files (as specified in the config file)
 - Download deployment files (as specified in the config file)
-- Logging to stdout and writes to file
+- Logging to stdout and writes to a log file
 
 ## Setup
 
@@ -94,9 +95,25 @@ A few examples.
 
 #### Backup app
 
-This will cause the application to stop running as it is a requirement before backup the operation starts. This is the only state changing action the program executes.
+This will cause the application to stop running as it is a requirement before the backup operation starts. This is the 
+only state changing action the program executes.
 
 `sudo ./run.py --app jira --file /tmp/jira.json.json -bs`
+
+
+## Reference
+
+### Idempotent
+
+The script is safe to run multiple times as the backup and download operation will not execute again if it has been 
+previously done.
+
+### Logging
+
+The program writes log messages to `/var/tmp/atlassian_admin_tools.log` and `stdout`.
+
+Certain output from commands such as `ps`  is sent only `stdout` but there will be a correponding log message 
+on the success or failure of the command written to the log file.
 
 
 ## Limitations
@@ -114,5 +131,6 @@ This will cause the application to stop running as it is a requirement before ba
 - Refactor error handling
 - Clean up orphaned tar file if `tar.add()` fails
 - Inlcude unit testing
+- Better documentation
 
 
