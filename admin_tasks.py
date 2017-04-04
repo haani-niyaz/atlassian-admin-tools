@@ -78,7 +78,7 @@ def run_cmd(cmd):
 	# Wait for process to terminate before getting return code
 	p.wait()
 	if p.returncode == 0:
-		return output.rstrip()
+		return output.rstrip("\n")
 	return False
 
 def get_process(name):
