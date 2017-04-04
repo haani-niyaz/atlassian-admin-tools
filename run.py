@@ -6,41 +6,78 @@ import tar_utility
 import multi_logging
 import settings
 import sys
-import backup
+from optparse import OptionParser
+import setting
+from backup import Backup
+from download import Download
 
 
 if __name__ == '__main__':
 
-	log 	= logging.getLogger('atlassian-admin-tools')
-	config  = settings.get_config('jira')
-	backup  = backup.Backup(config,log)
-	
+	usage = '''
+	%prog --app <jira|bamboo|bitbucket|crowd> --file <filename>.json [options] 
 
-	backup.create_backup_dir()
-	log.debug("Backup working directory is %s" % backup.backup_working_dir)
+	Backup Example:
+	%prog --app jira --config /tmp/jira.json -b -s
 
-	# Drop privileges to 'proteus' user
-	admin_tasks.change_user()
+	'''
+	parser = OptionParser(usage=usage)
 
-	backup.backup_app()
-	backup.download_files()
+ 	parser.add_option("-a", "--app", dest="app", type='choice', choices=['jira','bitbucket','bamboo','crowd'],
+                  help="Specify app name")
+	parser.add_option("-f", "--file", dest="file", help="Specify config file path")
+	parser.add_option("-b", action="store_true", dest="backup",help="Backup application. Must use with shutdown flag.")
+	parser.add_option("-p", action="store_true", dest="process",help="Check application process")
+	parser.add_option("-s", action="store_true", dest="shutdown",help="Shutdown application")
+	parser.add_option("-d", action="store_true", dest="download",help="Download deployment files")
 
-	# Check process 
-	ps_output = admin_tasks.get_process('jira')
+	(options, args) = parser.parse_args()
 
-	if ps_output:
-		log.debug('Getting application process data')
-		log.info('Application process is running')
-		print("Process output: \n" + ps_output)
-	else:
-		log.error('Application process is not running')
 
-	log.debug(" [SUMMARY] ")
-	for file_path in backup.files_downloaded:
-		log.info(admin_tasks.get_file_details(file_path))
+	if options.app and options.file:
+		app_name = options.app
+		log 	 = logging.getLogger('atlassian-admin-tools')
+		config   = settings.get_config(options.file)
+		
 
-	for file_path in backup.files_backed_up:
-		log.info(admin_tasks.get_file_details(file_path))
+		if options.backup and options.shutdown:
+
+				backup   = Backup(config,log)
+				backup.create_backup_dir()
+				log.debug("Backup working directory is %s" % backup.backup_working_dir)
+
+				cmd_output = admin_tasks.manage_service('httpd','stop')
+				if cmd_output:
+						log.debug('Getting application process data')
+						log.info('Application service has been shutdown')
+						print("Command output: \n" + cmd_output)
+				else:
+						log.info('Application service shutdown failed')
+
+				# Drop privileges to 'proteus' user
+				admin_tasks.change_user()
+
+				backup.backup_app()
+				backup.summary()
+				
+
+		elif options.download:
+				download = Download(config,log)
+				download.download_files()
+				download.summary()
+				
+		
+
+		elif options.process:
+			cmd_output = admin_tasks.get_process('httpd')
+			if cmd_output:
+				log.debug('Getting application process data')
+				log.info('Application process is running')
+				print("Command output: \n" + cmd_output)
+			else:
+				log.info('Application process is not running')
+		else:
+			parser.print_help()
 
 
 
