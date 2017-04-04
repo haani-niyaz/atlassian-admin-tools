@@ -45,7 +45,7 @@ if __name__ == '__main__':
 				backup.create_backup_dir()
 				log.debug("Backup working directory is %s" % backup.backup_working_dir)
 
-				cmd_output = admin_tasks.manage_service('httpd','stop')
+				cmd_output = admin_tasks.manage_service(app_name,'stop')
 				if cmd_output:
 						log.debug('Getting application process data')
 						log.info('Application service has been shutdown')
@@ -68,7 +68,7 @@ if __name__ == '__main__':
 		
 
 		elif options.process:
-			cmd_output = admin_tasks.get_process('httpd')
+			cmd_output = admin_tasks.get_process(app_name)
 			if cmd_output:
 				log.debug('Getting application process data')
 				log.info('Application process is running')
