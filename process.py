@@ -25,9 +25,10 @@ class Process(object):
 				self.log.debug('Getting application process data')
 				self.log.info('Application service has been shutdown')
 				print("Command output: \n" + cmd_output)
+				return True
 		else:
-				self.log.warning('Application service shutdown failed')		
-
+				self.log.error('Application service shutdown failed')		
+				return False	
 
 
 if __name__ == '__main__':

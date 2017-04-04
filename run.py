@@ -52,13 +52,13 @@ if __name__ == '__main__':
 					backup = Backup(config,log)
 					backup.create_backup_dir()
 					log.debug("Backup working directory is %s" % backup.backup_working_dir)
-					Process(app_name,log).shutdown()
+					is_shutdown = Process(app_name,log).shutdown()
+					if is_shutdown:
+						# Drop privileges to 'proteus' user
+						admin_tasks.change_user()
 
-					# Drop privileges to 'proteus' user
-					admin_tasks.change_user()
-
-					backup.backup_app()
-					backup.summary()
+						backup.backup_app()
+						backup.summary()
 
 			elif options.download:
 				download = Download(config,log)
