@@ -9,6 +9,7 @@ import sys
 from optparse import OptionParser
 from backup import Backup
 from download import Download
+from process import Process
 
 
 if __name__ == '__main__':
@@ -18,7 +19,7 @@ if __name__ == '__main__':
 
 	Backup Example
 	--------------
-	%prog --app jira --config /tmp/jira.json -bs
+	%prog --app jira --file /tmp/jira.json -bs
 	'''
 	parser = OptionParser(usage=usage)
 
@@ -33,48 +34,54 @@ if __name__ == '__main__':
 	(options, args) = parser.parse_args()
 
 
-	if options.app and options.file:
+	if options.app:
+		# Initialize if a valid app name is provided
 		app_name = options.app
 		log 	 = logging.getLogger('atlassian-admin-tools')
-		config   = settings.get_config(options.file)
+
+		if options.file:
+			# Initialize if config file provided and valid
+			config  = settings.get_config(options.file)
 		
+			# backup, shutdown, process check can run if app_name and config file has been
+			# initialized
 
-		if options.backup and options.shutdown:
+			# Backup requires shutdown option
+			if options.backup and options.shutdown:
 
-				backup = Backup(config,log)
-				backup.create_backup_dir()
-				log.debug("Backup working directory is %s" % backup.backup_working_dir)
-				log.debug("Shutting down %s application" % app_name)
-				cmd_output = admin_tasks.manage_service(app_name,'stop')
-				if cmd_output:
-						log.debug('Getting application process data')
-						log.info('Application service has been shutdown')
-						print("Command output: \n" + cmd_output)
-				else:
-						log.info('Application service shutdown failed')
+					backup = Backup(config,log)
+					backup.create_backup_dir()
+					log.debug("Backup working directory is %s" % backup.backup_working_dir)
+					Process(app_name,log).shutdown()
 
-				# Drop privileges to 'proteus' user
-				admin_tasks.change_user()
+					# Drop privileges to 'proteus' user
+					admin_tasks.change_user()
 
-				backup.backup_app()
-				backup.summary()
-				
-		elif options.download:
+					backup.backup_app()
+					backup.summary()
+
+			elif options.download:
 				download = Download(config,log)
 				download.download_files()
 				download.summary()
-	
-		elif options.process:
-			log.debug('Getting application process data')
-			cmd_output = admin_tasks.get_process(app_name)
-			if cmd_output:
-				log.info('Application process is running')
-				print("Command output: \n" + cmd_output)
+			
+			elif options.process:
+				Process(app_name,log).get_process()
 			else:
-				log.info('Application process is not running')
+				parser.print_help()
+
+		# Process check can run without config file		
+		elif options.process:
+			Process(app_name,log).get_process()
 		
+		# Show help if app name and config file has been provided but no switch 
 		else:
 			parser.print_help()
+
+	# show help if app name has been provied but no config file and/or switch 
+	# has been set
+	else:
+		parser.print_help()
 
 
 
