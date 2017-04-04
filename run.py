@@ -41,7 +41,7 @@ if __name__ == '__main__':
 
 		if options.backup and options.shutdown:
 
-				backup   = Backup(config,log)
+				backup = Backup(config,log)
 				backup.create_backup_dir()
 				log.debug("Backup working directory is %s" % backup.backup_working_dir)
 				log.debug("Shutting down %s application" % app_name)
@@ -59,14 +59,11 @@ if __name__ == '__main__':
 				backup.backup_app()
 				backup.summary()
 				
-
 		elif options.download:
 				download = Download(config,log)
 				download.download_files()
 				download.summary()
-
-		
-
+	
 		elif options.process:
 			log.debug('Getting application process data')
 			cmd_output = admin_tasks.get_process(app_name)
@@ -75,6 +72,7 @@ if __name__ == '__main__':
 				print("Command output: \n" + cmd_output)
 			else:
 				log.info('Application process is not running')
+		
 		else:
 			parser.print_help()
 
