@@ -33,7 +33,7 @@ class Download(object):
 
 
 	def summary(self):
-		self.log.debug("-- SUMMARY --")
+		self.log.debug("-- Download Summary --")
 		count = self.count_active_download_items(self.downloads)
 		for file_path in self.files_downloaded:
 			self.log.info(admin_tasks.get_file_details(file_path))
