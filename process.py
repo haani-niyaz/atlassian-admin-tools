@@ -16,7 +16,7 @@ class Process(object):
 			self.log.info('Application process is running')
 			print("Command output: \n" + cmd_output)
 		else:
-			self.log.info('Application process is not running')
+			self.log.error('Application process is not running')
 
 	def shutdown(self):
 		self.log.debug("Shutting down %s application" % self.app_name)
@@ -29,6 +29,15 @@ class Process(object):
 		else:
 				self.log.error('Application service shutdown failed')		
 				return False	
+
+	def clean_repo(self,repo):
+		self.log.debug('Cleaning repo')
+		cmd_output = admin_tasks.yum_clean(repo)
+		if cmd_output:
+			self.log.info('Repo cleaned')
+			print("Command output: \n" + cmd_output)
+		else:
+			self.log.error('Repo clean failed. Check repo details and try again.')			
 
 
 if __name__ == '__main__':

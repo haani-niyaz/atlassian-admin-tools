@@ -26,10 +26,12 @@ if __name__ == '__main__':
  	parser.add_option("-a", "--app", dest="app", type='choice', choices=['jira','bitbucket','bamboo','crowd'],
                   help="Specify app name")
 	parser.add_option("-f", "--file", dest="file", help="Specify config file path")
+	parser.add_option("-r", "--repo", dest="repo", help="Specify yum repo")
 	parser.add_option("-b", action="store_true", dest="backup",help="Backup application. Must use with shutdown flag.")
 	parser.add_option("-p", action="store_true", dest="process",help="Check application process")
 	parser.add_option("-s", action="store_true", dest="shutdown",help="Shutdown application")
 	parser.add_option("-d", action="store_true", dest="download",help="Download deployment files")
+
 
 	(options, args) = parser.parse_args()
 
@@ -67,6 +69,10 @@ if __name__ == '__main__':
 			
 			elif options.process:
 				Process(app_name,log).get_process()
+
+			elif options.repo:
+				Process(app_name,log).clean_repo(options.repo)
+
 			else:
 				parser.print_help()
 
@@ -74,6 +80,11 @@ if __name__ == '__main__':
 		elif options.process:
 			Process(app_name,log).get_process()
 		
+
+		elif options.repo:
+			Process(app_name,log).clean_repo(options.repo)
+
+
 		# Show help if app name and config file has been provided but no switch 
 		else:
 			parser.print_help()

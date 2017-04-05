@@ -88,6 +88,13 @@ def manage_service(name,operation):
 	cmd = "/bin/bash -c  \"/sbin/service %s %s \" " % (name,operation)
 	return run_cmd(cmd)
 
+def yum_clean(repo):
+	if os.path.exists("/etc/yum.repos.d/%s.repo" % repo):
+		cmd = "/bin/bash -c  \"yum --enablerep=%s clean all\" " % repo
+		return run_cmd(cmd)
+	else:
+		return False
+
 if __name__ == '__main__':
 	pass
 
