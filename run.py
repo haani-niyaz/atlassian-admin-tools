@@ -15,11 +15,11 @@ from process import Process
 if __name__ == '__main__':
 
     usage = '''
-    %prog --app <jira|bamboo|bitbucket|crowd> --file <filename>.json [options] 
+    sudo %prog --app <jira|bamboo|bitbucket|crowd> --file <filename>.json [options] 
 
     Backup Example
     --------------
-    %prog --app jira --file /tmp/jira.json -bs
+    sudo %prog --app jira --file /tmp/jira.json -bs
     '''
     parser = OptionParser(usage=usage)
 
