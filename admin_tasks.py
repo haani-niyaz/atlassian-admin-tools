@@ -40,6 +40,12 @@ def set_ownership(path,user='proteus'):
     log.info("Setting %s ownership to %s:%s " % (path,user,user))
     os.chown(path,uid,gid)
 
+
+def set_permissions(path,permissions):
+    print permissions
+    log.info("Setting permissions for file %s" % path)
+    os.chmod(path,permissions)
+
 def get_filename(url):
     return os.path.basename(url)
 
