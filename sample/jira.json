@@ -14,22 +14,32 @@
    ],
    "file_name": "atlassian-jira-software-7.3.0-x64.bin",
    "temp_dir": "/var/tmp",
-
-   "backups": [
-      {
-         "install": {
-            "tar_file": "jira-installdir.tar.gz",
-            "parent_dir": "/opt",
-            "backup_dir": "jira"
+   "backup":{
+      "dirs":[
+         {
+            "install":{
+               "tar_file":"jira-installdir.tar.gz",
+               "parent_dir":"/opt/atlassian",
+               "backup_dir":"jira"
+            }
+         },
+         {
+            "home":{
+               "tar_file":"jira-home.tar.gz",
+               "parent_dir":"/mnt/jira",
+               "backup_dir":"jira-home"
+            }
          }
-      },
-      {
-         "home": {
-            "tar_file": "jira-home.tar.gz",
-            "parent_dir": "/var/tmp",
-            "backup_dir": "jira-home"
+      ],
+      "files":[
+         {
+            "crowd.properties":"/opt/atlassian/jira/atlassian-jira/WEB-INF/classes/crowd.properties"
+         },
+         {
+            "dbconfig.xml":"/mnt/jira/jira-home/dbconfig.xml"
          }
-      }
-   ]
+      ]
+   }
 }
+
 
