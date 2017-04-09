@@ -42,9 +42,22 @@ def set_ownership(path,user='proteus'):
 
 
 def set_permissions(path,permissions):
-    print permissions
-    log.info("Setting permissions for file %s" % path)
-    os.chmod(path,permissions)
+    '''
+    Set file permissions
+
+    Args:
+    @path        : Path to file
+    @permissions : permissions are set as octal integer. Python automagically treats any 
+                   integer with a leading zero as octal.
+    '''
+    
+    if os.path.exists(path):
+        log.info("Setting permissions %s for file %s" % (oct(permissions),path))
+        os.chmod(path,permissions)
+        return True
+    else:
+        log.error("File does not exist.")
+        return False
 
 def get_filename(url):
     return os.path.basename(url)
