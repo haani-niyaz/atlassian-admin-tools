@@ -29,6 +29,7 @@ class Backup(object):
                     dest_file,
                     data['parent_dir'],
                     data['backup_dir'])
+                admin_tasks.set_permissions(dest_file,0400)
                 self.files_backed_up.append(dest_file)
 
                 if self.log: self.log.info("File Details: %s " % admin_tasks.get_file_details(dest_file))       
