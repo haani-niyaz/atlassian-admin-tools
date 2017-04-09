@@ -108,7 +108,7 @@ def manage_service(name,operation):
 
 def yum_clean(repo):
     if os.path.exists("/etc/yum.repos.d/%s.repo" % repo):
-        cmd = "/bin/bash -c  \"yum --enablerep=%s clean all\" " % repo
+        cmd = "/bin/bash -c  \"yum --disablerepo=* --enablerepo=%s clean all\" " % repo
         return run_cmd(cmd)
     else:
         return False
