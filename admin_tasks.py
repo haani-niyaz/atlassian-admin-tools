@@ -11,6 +11,7 @@ import logging
 import subprocess
 import pwd
 import re
+from shutil import copyfile
 
 log = logging.getLogger('atlassian-admin-tools')
 
@@ -120,6 +121,16 @@ def df_stats(fs):
     stats = re.findall(needle,haystack)
     if stats:
         return stats
+    return False
+
+def copy_file(source,dest):
+    if os.path.exists(dest):
+        log.warn("%s already exists" % dest)
+        return None
+    elif os.path.exists(source):
+        copyfile(source,dest)
+        return True
+    
     return False
 
 if __name__ == '__main__':

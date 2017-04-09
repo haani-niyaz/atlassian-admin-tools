@@ -69,6 +69,7 @@ if __name__ == '__main__':
                         admin_tasks.change_user()
 
                         backup.backup_app()
+                        backup.backup_config()
                         backup.summary()
 
             elif options.download:
