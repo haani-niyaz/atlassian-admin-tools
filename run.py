@@ -90,9 +90,6 @@ if __name__ == '__main__':
         elif options.repo:
             Process(app_name,log).clean_repo(options.repo)
 
-
-        elif options.capacity:
-            Process(app_name,log).check_disk_capacity(options.capacity)
             
         # Show help if app name and config file has been provided but no switch 
         else:
