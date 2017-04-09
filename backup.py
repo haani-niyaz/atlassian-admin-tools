@@ -8,7 +8,8 @@ class Backup(object):
     def __init__(self,config,log):
         self.backup_working_dir = config['base_backup_dir'] +'/'+ config['CRQ']
         self.temp_dir           = config['temp_dir']
-        self.backups            = config['backups']
+        self.backup_dirs        = config['backup']['dirs']
+        self.backup_files       = config['backup']['files']
         self.downloads          = config['downloads']
         self.log                = log
         self.files_downloaded   = []
@@ -20,9 +21,9 @@ class Backup(object):
 
     def backup_app(self):
         
-        for index, backup_metadata in enumerate(self.backups):
+        for index, backup_metadata in enumerate(self.backup_dirs):
             for data in backup_metadata.itervalues():
-                self.log.info("Backing up %s of %s.." % (index+1,len(self.backups)))
+                self.log.info("Backing up %s of %s.." % (index+1,len(self.backup_dirs)))
                 
                 dest_file = self.backup_working_dir + '/' + data['tar_file']
                 tar_utility.create_tar(
