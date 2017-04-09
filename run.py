@@ -37,6 +37,9 @@ if __name__ == '__main__':
     parser.add_option("-p", action="store_true", dest="process",help="Check application process")
     parser.add_option("-s", action="store_true", dest="shutdown",help="Shutdown application")
     parser.add_option("-d", action="store_true", dest="download",help="Download deployment files")
+    parser.add_option("-u", "--space-required", dest="disk_space", type=float,
+                  help="Check for free disk space. Specify in GBs. i.e: 1 for 1GB")
+
 
 
     (options, args) = parser.parse_args()
@@ -90,6 +93,9 @@ if __name__ == '__main__':
         elif options.repo:
             Process(app_name,log).clean_repo(options.repo)
 
+
+        elif options.disk_space:
+            Process(app_name,log).check_disk_space(options.disk_space)
             
         # Show help if app name and config file has been provided but no switch 
         else:
