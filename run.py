@@ -1,11 +1,17 @@
 #! /usr/bin/env python
 
+from os import getuid
+from sys import exit
+
+if getuid() != 0:
+    print("Invalid usage. Script must be executed as a privileged user.")
+    exit(1)
+
 import admin_tasks
 import logging
 import tar_utility
 import multi_logging
 import settings
-import sys
 from optparse import OptionParser
 from backup import Backup
 from download import Download

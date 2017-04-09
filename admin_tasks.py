@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 '''
-Admin tasks to run as sudo
+System admin tasks
 '''
 
 import os
@@ -26,7 +26,6 @@ def make_dirs(dirs):
 
     return False
     
-
 def change_user(user='proteus'):
     uid = pwd.getpwnam(user).pw_uid
     gid = pwd.getpwnam(user).pw_gid
