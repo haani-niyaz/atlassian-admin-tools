@@ -113,6 +113,14 @@ def yum_clean(repo):
     else:
         return False
 
+def df_stats(fs):
+    cmd  = "df -h -P %s" % fs
+    haystack = run_cmd(cmd)
+    needle = r'(\d+\.\d+G)'
+    stats = re.findall(needle,haystack)
+    if stats:
+        return stats
+    return False
 
 if __name__ == '__main__':
     pass

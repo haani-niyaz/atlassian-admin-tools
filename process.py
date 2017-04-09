@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 import admin_tasks
-
+import sys
 
 class Process(object):
 
@@ -38,6 +38,28 @@ class Process(object):
             print("Command output: \n" + cmd_output)
         else:
             self.log.error('Repo clean failed. Check repo details and try again.')          
+
+
+    def check_disk_space(self, required_disk_space, fs='/opt'):
+        stats = admin_tasks.df_stats(fs)
+        if stats:
+            size, used, available = stats
+            # Remove 'G' from output
+            available = float(available[:-1])
+            space_left = available - required_disk_space
+
+            if space_left > 0.5:
+                self.log.info("%sG of disk space is available from %sG in %s" %
+                              (required_disk_space, available,fs))
+            elif space_left >= 0 and space_left <= 0.5:
+                self.log.warning("Low disk space. Only %sG will be free from available space of %sG in %s." % (
+                    space_left, available, fs))
+            else:
+                self.log.error("Not enough disk space. %sG is not available from avaiable space of %sG in %s." % (
+                    required_disk_space, available, fs))
+                sys.exit(1)
+
+
 
 
 if __name__ == '__main__':
