@@ -4,9 +4,9 @@ import sys
 
 class Process(object):
 
-    def __init__(self,app_name,log):
-        self.app_name = app_name
+    def __init__(self,log,app_name=None):
         self.log = log
+        self.app_name = app_name
 
 
     def get_process(self):
