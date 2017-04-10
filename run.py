@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
 examples:
     sudo ./%prog -u 1                                 # Check if 1GB of disk space is available in /opt
-    sudo ./%prog --app jira -p                        # Check application process          
+    sudo ./%prog --app jira -p                        # Check application process status          
     sudo ./%prog --app jira --file /tmp/jira.json -bs # Shutdown application and perform backup
     """
 
@@ -40,10 +40,10 @@ examples:
                               'Format: sudo ./run --app <name> <option>')
     app_options.add_option("-a", "--app", dest="app", type='choice', choices=['jira', 'bitbucket', 'bamboo', 'crowd'],
                            help="Specify app name")
-    app_options.add_option("-s", action="store_true",
+    app_options.add_option("-s", "--shut-down", action="store_true",
                            dest="shutdown", help="Shutdown application")
-    app_options.add_option("-p", action="store_true", dest="process",
-                           help="Check application process")
+    app_options.add_option("-p", "--status",action="store_true", dest="process",
+                           help="Check application process status")
     parser.add_option_group(app_options)
 
     config_file_options = OptionGroup(
@@ -51,7 +51,7 @@ examples:
     config_file_options.add_option("-f", "--file", dest="file",
                                    help="Specify config file path")
     config_file_options.add_option("-b", action="store_true", dest="backup",
-                                   help="Backup application. Must use with shutdown flag.")
+                                   help="Backup application. Must use with shutdown option.")
     config_file_options.add_option("-d", action="store_true",
                                    dest="download", help="Download deployment files")
 
@@ -87,11 +87,6 @@ examples:
                     backup.backup_app()
                     backup.backup_config()
                     backup.summary()
-
-            elif options.download:
-                download = Download(config, log)
-                download.download_files()
-                download.summary()
 
             else:
                 parser.print_help()
