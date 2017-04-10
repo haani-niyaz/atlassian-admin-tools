@@ -42,7 +42,7 @@ examples:
                            help="Specify app name")
     app_options.add_option("-s", "--shut-down", action="store_true",
                            dest="shutdown", help="Shutdown application")
-    app_options.add_option("-p", "--status",action="store_true", dest="process",
+    app_options.add_option("-p", "--status", action="store_true", dest="process",
                            help="Check application process status")
     parser.add_option_group(app_options)
 
@@ -87,6 +87,11 @@ examples:
                     backup.backup_app()
                     backup.backup_config()
                     backup.summary()
+
+                if options.download:
+                    download = Download(config, log)
+                    download.download_files()
+                    download.summary()
 
             else:
                 parser.print_help()
