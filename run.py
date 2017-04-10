@@ -88,10 +88,10 @@ examples:
                     backup.backup_config()
                     backup.summary()
 
-                if options.download:
-                    download = Download(config, log)
-                    download.download_files()
-                    download.summary()
+            if options.download:
+                download = Download(config, log)
+                download.download_files()
+                download.summary()
 
             else:
                 parser.print_help()
