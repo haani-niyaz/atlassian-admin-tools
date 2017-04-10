@@ -15,13 +15,15 @@
 
 ## Description
 
-Provide an utility to to execute deployment pre-checks and pre-implementation steps.      
+Utility program to execute deployment pre-checks and pre-implementation steps.      
 
 ### Capabilities:
 
-- Stop service prior to backup
-- Check service process
-- Executes commands as the application user
+- Check application process status
+- Check if disk space required is sufficient
+- Verfiy if a rpm package exists in the repo
+- Executes commands as the application user & privileges user (where necessary)
+- Shutdown application
 - Backup files (as specified in the config file)
 - Download deployment files (as specified in the config file)
 - Logging to stdout and writes to a log file
@@ -30,14 +32,31 @@ Provide an utility to to execute deployment pre-checks and pre-implementation st
 
 ### What [atlassian-admin-tools] affects 
 
-The application reads a json config file which specifies:
+The application runs in three modes:
 
-- Files to backup
+#### Program options
+
+Program can be used independently to do the following:
+- Verify if required disk space is available
+- Check if a RPM package is available in the specified repo
+
+#### App options
+
+Requires specifying application name. With these options you can:
+
+- Shutdown application
+- Check application process status
+
+#### Configuration file options
+
+The program reads a json config file which specifies:
+
 - Backup directory
+- Files to backup
+- Directories to backup
 - Files to download for deployment
 
 A sample configuration has been provided in `sample/jira.json`
-
 
 ### Setup Requirements 
 
@@ -62,22 +81,39 @@ The program accepts an `app` and `file` as input with optional arguments.
 ```
 [atlassian-admin-tools]$ sudo ./run.py 
 usage: 
-	run.py --app <jira|bamboo|bitbucket|crowd> --file <filename>.json [options] 
+    sudo ./run.py <option>
+    sudo ./run.py <command> <option>
+    sudo ./run.py <command>  <sub-command> <option>
 
-	Backup Example
-	--------------
-	run.py --app jira --file /tmp/jira.json -bs
-	
+
+examples:
+    sudo ./run.py -u 1                                 # Check if 1GB of disk space is available in /opt
+    sudo ./run.py --app jira -p                        # Check application process status          
+    sudo ./run.py --app jira --file /tmp/jira.json -bs # Shutdown application and perform backup
+    
 
 options:
   -h, --help            show this help message and exit
-  -a APP, --app=APP     Specify app name
-  -f FILE, --file=FILE  Specify config file path
-  -b                    Backup application. Must use with shutdown flag.
-  -p                    Check application process
-  -s                    Shutdown application
-  -d                    Download deployment files
+  -u DISK_SPACE, --space-required=DISK_SPACE
+                        Check for free disk space. Specify in GBs. i.e: 1 for
+                        1GB
+  -i PACKAGE_NAME, --package-info=PACKAGE_NAME
+                        Specify rpm package name with REPO_NAME as an argument
 
+  Application operations:
+    Format: sudo ./run --app <name> <option>
+
+    -a APP, --app=APP   Specify app name
+    -s, --shut-down     Shutdown application
+    -p, --status        Check application process status
+
+  Configuration file operations:
+    Format: sudo ./run --app <name> --file <path> <option>
+
+    -f FILE, --file=FILE
+                        Specify config file path
+    -b                  Backup application. Must use with shutdown option.
+    -d                  Download deployment files
 ```
 
 
@@ -85,9 +121,22 @@ options:
 
 A few examples.
 
+
+#### Check if rpm package exists
+
+`sudo ./run.py -i jdk1.8.0_121 epel`
+
+
+#### Check for free disk space
+
+```
+# Check if 1GB of disk space is available
+sudo ./run.py -u 1
+```
+
 #### Check process
 
-`sudo ./run.py --app jira --file /tmp/jira.json.json -p`
+`sudo ./run.py --app jira -p`
 
 #### Download files
 
@@ -95,8 +144,8 @@ A few examples.
 
 #### Backup app
 
-This will cause the application to stop running as it is a requirement before the backup operation starts. This is the 
-only state changing action the program executes.
+This will cause the application to stop running as it is a requirement before the backup operation starts. Note that it
+is mandatory to supply the `-s` option to perform the backup. 
 
 `sudo ./run.py --app jira --file /tmp/jira.json.json -bs`
 
@@ -118,19 +167,22 @@ on the success or failure of the command written to the log file.
 
 ## Limitations
 
-- Requires python `2.4` to run.
+- Requires python 2.4 to run.
+- Python 2.4 `optparse` module appears to have limited support for `<program> <command> <options> <args>`.
+- File system check is only for `/opt` (at the moment anyway)
 
 
 ## Development
 
 ### TO-DO
 
-- Include json validation as a program option
-- Module vs. Class split
+- JSON validation as a program option
 - Refactor project structure
-- Refactor error handling
 - Clean up orphaned tar file if `tar.add()` fails
-- Inlcude unit testing
-- Better documentation
+- Unit testing
+- Documentation
+- Backup symlink directories
+- Non-zero exit codes for errors
+
 
 
