@@ -30,15 +30,6 @@ class Process(object):
                 self.log.error('Application service shutdown failed')       
                 return False    
 
-    def clean_repo(self,repo):
-        self.log.debug('Cleaning repo')
-        cmd_output = admin_tasks.yum_clean(repo)
-        if cmd_output:
-            self.log.info('Repo cleaned')
-            print("Command output: \n" + cmd_output)
-        else:
-            self.log.error('Repo clean failed. Check repo details and try again.')          
-
 
     def check_disk_space(self, required_disk_space, fs='/opt'):
         stats = admin_tasks.df_stats(fs)
@@ -60,6 +51,13 @@ class Process(object):
                 sys.exit(1)
 
 
+    def package_info(self, package, repo):
+        cmd_output = admin_tasks.yum_info(package,repo)
+        if cmd_output:
+            self.log.info("%s package exists" % package)
+            print("Command output: \n" + cmd_output)
+        else:
+            self.log.error("%s package was not found" % package)
 
 
 if __name__ == '__main__':

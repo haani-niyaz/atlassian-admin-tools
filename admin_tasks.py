@@ -114,6 +114,14 @@ def yum_clean(repo):
     else:
         return False
 
+def yum_info(package,repo):
+    if yum_clean(repo):
+         cmd = "/bin/bash -c  \"yum --disablerepo=* --enablerepo=%s  info %s\" " % (repo,package)
+         return run_cmd(cmd)
+    else:
+        log.error('Yum clean failed. Please check repo and retry.')
+        return False
+
 def df_stats(fs):
     cmd  = "df -h -P %s" % fs
     haystack = run_cmd(cmd)

@@ -35,6 +35,8 @@ examples:
     parser = OptionParser(usage=usage)
     parser.add_option("-u", "--space-required", dest="disk_space", type=float,
                       help="Check for free disk space. Specify in GBs. i.e: 1 for 1GB")
+    parser.add_option("-i", "--package-info", 
+                           dest="package_name", help="Specify rpm package name with REPO_NAME as an argument")
 
     app_options = OptionGroup(parser, 'Application operations',
                               'Format: sudo ./run --app <name> <option>')
@@ -109,6 +111,12 @@ examples:
 
     elif options.disk_space:
         Process(log).check_disk_space(options.disk_space)
+
+    elif options.package_name:
+        if args:
+            Process(log).package_info(options.package_name,args[0])
+        else:
+            parser.print_help()
 
     # show help if app name has been provied but no config file and/or switch
     # has been set
