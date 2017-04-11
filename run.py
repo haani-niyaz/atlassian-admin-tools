@@ -4,7 +4,7 @@ from os import getuid
 from sys import exit
 
 if getuid() != 0:
-    print("Invalid usage. Script must be executed as a privileged user.")
+    print("Invalid usage. Script must be executed as a privileged user i.e: sudo ./run.py <options>")
     exit(1)
 
 import admin_tasks
