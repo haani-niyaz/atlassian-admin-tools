@@ -90,7 +90,7 @@ examples:
                     backup.backup_config()
                     backup.summary()
 
-            if options.download:
+            elif options.download:
                 download = Download(config, log)
                 download.download_files()
                 download.summary()
