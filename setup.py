@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
-import cmd_options
 import logging
-import multi_logging
+from core import cmd_options
+from core import multi_logging
+from core import settings
 from utils import admin_tasks
-import settings
 from controllers import backup as bkp
 from controllers import download as dl
 from controllers import process
