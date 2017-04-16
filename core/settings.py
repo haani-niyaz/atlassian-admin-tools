@@ -6,7 +6,7 @@ import sys
 
 def get_config(file):
     if os.path.exists(file):
-        # Nesting required to use finally prior python 2.5
+        # Nesting required to use finally prior to python 2.5
         try:
             try:
                 fh = open(file, 'r')
