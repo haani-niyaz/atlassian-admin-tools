@@ -1,8 +1,8 @@
 #! /usr/bin/env python
 
-'''
+"""
 System admin tasks
-'''
+"""
 
 import os
 import errno
