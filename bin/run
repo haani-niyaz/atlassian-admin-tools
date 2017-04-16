@@ -7,9 +7,9 @@ if os.getuid() != 0:
     print("Invalid usage. Script must be executed as a privileged user i.e: sudo ./run.py <options>")
     sys.exit(1)
 
-# Append the module path
+# Append to module path
 sys.path.append(os.path.join(
-    os.path.dirname(sys.path[0]), 'proteusadmintools'))
+    os.path.dirname(sys.path[0]), 'utils'))
 
 import setup
 
