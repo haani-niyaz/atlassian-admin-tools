@@ -39,7 +39,8 @@ def main():
                 backup.create_backup_dir()
                 log.debug("Backup working directory is %s" %
                           backup.backup_working_dir)
-                is_shutdown = process.ProcessController(log, app_name).shutdown()
+                is_shutdown = process.ProcessController(
+                    log, app_name).shutdown()
                 if is_shutdown:
                     # Drop privileges to 'proteus' user
                     admin_tasks.change_user()
@@ -73,7 +74,8 @@ def main():
 
     elif options.package_name:
         if args:
-            process.ProcessController(log).package_info(options.package_name, args[0])
+            process.ProcessController(log).package_info(
+                options.package_name, args[0])
         else:
             parser.print_help()
 
