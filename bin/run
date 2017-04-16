@@ -8,8 +8,9 @@ if os.getuid() != 0:
     sys.exit(1)
 
 # Append to module path
-sys.path.append(os.path.join(
-    os.path.dirname(sys.path[0]), 'utils'))
+sys.path.append(
+    os.path.dirname(sys.path[0]))
+
 
 import setup
 
