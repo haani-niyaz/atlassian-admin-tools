@@ -17,14 +17,22 @@ log = logging.getLogger('atlassian-admin-tools')
 
 
 def make_dirs(dirs):
-    try:
-        if not os.path.exists(dirs):
-            log.info("Creating %s directory " % dirs)
+    """
+    Create directories recursively.
+    """
+    if os.path.exists(dirs):
+        log.info("%s Directory already exists" % dirs)
+        return True
+    else:
+        try:
+            log.info("Creating %s directory" % dirs)
             os.makedirs(dirs)
             return True
-    except OSError, e:
-        if e.errno != errno.EEXIST:
-            raise
+        except OSError, e:
+            if e.errno == errno.EACCES:
+                log.error('Must run as privileged user')
+            else:
+                raise
 
     return False
 
