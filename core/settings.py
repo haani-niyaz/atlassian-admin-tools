@@ -20,3 +20,6 @@ def get_config(file):
     else:
         print('Please ensure config file path is valid')
         sys.exit(1)
+
+if __name__ == '__main__':
+    pass
