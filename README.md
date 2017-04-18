@@ -177,11 +177,15 @@ on the success or failure of the command written to the log file.
 ### TO-DO
 
 - JSON validation as a program option
-- Clean up orphaned tar file if `tar.add()` fails
-- Unit testing (In-Progress)
-- Documentation (In-Progress)
-- Backup symlink directories
-- Non-zero exit codes for errors (In-Progress)
+- Clean up orphaned tar file if `tar.add()` fails ([#2](https://github.com/haani-niyaz/atlassian-admin-tools/issues/2))
+- Backup symlink directories ([#9](https://github.com/haani-niyaz/atlassian-admin-tools/issues/9))
+- Get the backup file name from the path instead of relying on the
+  name to be present in the config ([#16](https://github.com/haani-niyaz/atlassian-admin-tools/issues/16))
+#### Working On
+
+- Unit testing 
+- Documentation 
+- Non-zero exit codes for errors 
 
 
 
