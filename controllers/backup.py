@@ -22,6 +22,10 @@ class BackupController(object):
     def create_backup_dir(self):
         if admin_tasks.make_dirs(self.backup_working_dir):
             admin_tasks.set_ownership(self.backup_working_dir)
+        else:
+            self.log.error(
+                'Creating directories failed with an unexpected error. Aborting.')
+            sys.exit(1)
 
     def backup_app(self):
 
