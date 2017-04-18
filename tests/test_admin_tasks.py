@@ -2,6 +2,10 @@
 
 import sys
 import os
+
+# Append project module path
+sys.path.append(os.path.dirname(sys.path[0]))
+
 import unittest
 from utils import admin_tasks
 
@@ -23,7 +27,7 @@ class TestAdminTasks(unittest.TestCase):
     def testMakeNewDirs(self):
         self.assertEqual(admin_tasks.make_dirs(self.dirs_new), True)
 
-    def teardown():
+    def tearDown(self):
         os.rmdir(self.dirs_exist)
         os.rmdir(self.dirs_new)
 
