@@ -177,12 +177,11 @@ on the success or failure of the command written to the log file.
 ### TO-DO
 
 - JSON validation as a program option
-- Refactor project structure
 - Clean up orphaned tar file if `tar.add()` fails
-- Unit testing
-- Documentation
+- Unit testing (In-Progress)
+- Documentation (In-Progress)
 - Backup symlink directories
-- Non-zero exit codes for errors
+- Non-zero exit codes for errors (In-Progress)
 
 
 
