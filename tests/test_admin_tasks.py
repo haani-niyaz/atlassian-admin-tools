@@ -2,6 +2,10 @@
 
 import sys
 import os
+
+# Append project module path
+sys.path.append(os.path.dirname(sys.path[0]))
+
 import unittest
 from utils import admin_tasks
 
