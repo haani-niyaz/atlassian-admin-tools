@@ -3,12 +3,13 @@ import simplejson as json
 import os
 import sys
 
+
 def get_config(file):
     if os.path.exists(file):
-        # Nesting required to use finally prior python 2.5
+        # Nesting required to use finally prior to python 2.5
         try:
             try:
-                fh = open(file ,'r')
+                fh = open(file, 'r')
                 config = json.load(fh)
                 return config
             except IOError, e:
@@ -18,4 +19,7 @@ def get_config(file):
 
     else:
         print('Please ensure config file path is valid')
-        sys.exit(1)     
+        sys.exit(1)
+
+if __name__ == '__main__':
+    pass

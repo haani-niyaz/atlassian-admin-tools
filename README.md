@@ -79,17 +79,17 @@ The program accepts an `app` and `file` as input with optional arguments.
 
 
 ```
-[atlassian-admin-tools]$ sudo ./run.py 
+[atlassian-admin-tools]$ sudo bin/run.by
 usage: 
-    sudo ./run.py <option>
-    sudo ./run.py <command> <option>
-    sudo ./run.py <command>  <sub-command> <option>
+    sudo bin/run.py <option>
+    sudo bin/run.py <command> <option>
+    sudo bin/run.py <command>  <sub-command> <option>
 
 
 examples:
-    sudo ./run.py -u 1                                 # Check if 1GB of disk space is available in /opt
-    sudo ./run.py --app jira -p                        # Check application process status          
-    sudo ./run.py --app jira --file /tmp/jira.json -bs # Shutdown application and perform backup
+    sudo bin/run.py -u 1                                 # Check if 1GB of disk space is available in /opt
+    sudo bin/run.py --app jira -p                        # Check application process status          
+    sudo bin/run.py --app jira --file /tmp/jira.json -bs # Shutdown application and perform backup
     
 
 options:
@@ -124,19 +124,19 @@ A few examples.
 
 #### Check if rpm package exists
 
-`sudo ./run.py -i jdk1.8.0_121 epel`
+`sudo bin/run.py -i jdk1.8.0_121 epel`
 
 
 #### Check for free disk space
 
 ```
 # Check if 1GB of disk space is available
-sudo ./run.py -u 1
+sudo bin/run.py -u 1
 ```
 
 #### Check process
 
-`sudo ./run.py --app jira -p`
+`sudo bin/run.py --app jira -p`
 
 #### Download files
 
@@ -147,7 +147,7 @@ sudo ./run.py -u 1
 This will cause the application to stop running as it is a requirement before the backup operation starts. Note that it
 is mandatory to supply the `-s` option to perform the backup. 
 
-`sudo ./run.py --app jira --file /tmp/jira.json.json -bs`
+`sudo bin/run.py --app jira --file /tmp/jira.json.json -bs`
 
 
 ## Reference

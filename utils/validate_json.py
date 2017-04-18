@@ -8,5 +8,11 @@ Convert JSON data to human-readable form.
 import sys
 import simplejson as json
 
-print json.dumps(json.loads(sys.stdin.read()), indent=4)
-sys.exit(0)
+
+def main():
+    print json.dumps(json.loads(sys.stdin.read()), indent=4)
+    sys.exit(0)
+
+
+if __name__ == '__main__':
+    main()

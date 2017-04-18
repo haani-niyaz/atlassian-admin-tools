@@ -1,13 +1,14 @@
 #! /usr/bin/env python
-import admin_tasks
+
 import sys
+from utils import admin_tasks
 
-class Process(object):
 
-    def __init__(self,log,app_name=None):
+class ProcessController(object):
+
+    def __init__(self, log, app_name=None):
         self.log = log
         self.app_name = app_name
-
 
     def get_process(self):
         self.log.debug('Getting application process data')
@@ -20,16 +21,15 @@ class Process(object):
 
     def shutdown(self):
         self.log.debug("Shutting down %s application" % self.app_name)
-        cmd_output = admin_tasks.manage_service(self.app_name,'stop')
+        cmd_output = admin_tasks.manage_service(self.app_name, 'stop')
         if cmd_output:
-                self.log.debug('Getting application process data')
-                self.log.info('Application service has been shutdown')
-                print("Command output: \n" + cmd_output)
-                return True
+            self.log.debug('Getting application process data')
+            self.log.info('Application service has been shutdown')
+            print("Command output: \n" + cmd_output)
+            return True
         else:
-                self.log.error('Application service shutdown failed')       
-                return False    
-
+            self.log.error('Application service shutdown failed')
+            return False
 
     def check_disk_space(self, required_disk_space, fs='/opt'):
         stats = admin_tasks.df_stats(fs)
@@ -41,7 +41,7 @@ class Process(object):
 
             if space_left > 0.5:
                 self.log.info("%sG of disk space is available from %sG in %s" %
-                              (required_disk_space, available,fs))
+                              (required_disk_space, available, fs))
             elif space_left >= 0 and space_left <= 0.5:
                 self.log.warning("Low disk space. Only %sG will be free from available space of %sG in %s." % (
                     space_left, available, fs))
@@ -50,9 +50,8 @@ class Process(object):
                     required_disk_space, available, fs))
                 sys.exit(1)
 
-
     def package_info(self, package, repo):
-        cmd_output = admin_tasks.yum_info(package,repo)
+        cmd_output = admin_tasks.yum_info(package, repo)
         if cmd_output:
             self.log.info("%s package exists" % package)
             print("Command output: \n" + cmd_output)

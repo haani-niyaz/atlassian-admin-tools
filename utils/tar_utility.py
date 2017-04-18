@@ -11,8 +11,10 @@ import logging
 
 log = logging.getLogger('atlassian-admin-tools')
 
+
 def check_if_exists(tarfile_dest):
     return os.path.isfile(tarfile_dest)
+
 
 def create_tar(dest_file, parent_dir, backup_dir):
     '''
@@ -28,9 +30,10 @@ def create_tar(dest_file, parent_dir, backup_dir):
         log.warn("%s already exists" % dest_file)
         return None
 
-    log.info("Creating tar %s from %s/%s" % (dest_file, parent_dir, backup_dir))
+    log.info("Creating tar %s from %s/%s" %
+             (dest_file, parent_dir, backup_dir))
 
-    os.chdir(parent_dir)    
+    os.chdir(parent_dir)
 
     try:
         try:
@@ -64,4 +67,3 @@ def create_tar(dest_file, parent_dir, backup_dir):
 
 if __name__ == '__main__':
     pass
-    

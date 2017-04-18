@@ -1,20 +1,23 @@
 #! /usr/bin/env python
-import admin_tasks
-import tar_utility
+
+import sys
+import os
+from utils import admin_tasks
+from utils import tar_utility
 
 
-class Backup(object):
+class BackupController(object):
 
     def __init__(self, config, log):
         self.backup_working_dir = config[
             'base_backup_dir'] + '/' + config['CRQ']
-        self.temp_dir           = config['temp_dir']
-        self.backup_dirs        = config['backup']['dirs']
-        self.backup_files       = config['backup']['files']
-        self.downloads          = config['downloads']
-        self.log                = log
-        self.files_downloaded   = []
-        self.files_backed_up    = []
+        self.temp_dir = config['temp_dir']
+        self.backup_dirs = config['backup']['dirs']
+        self.backup_files = config['backup']['files']
+        self.downloads = config['downloads']
+        self.log = log
+        self.files_downloaded = []
+        self.files_backed_up = []
 
     def create_backup_dir(self):
         if admin_tasks.make_dirs(self.backup_working_dir):
