@@ -27,7 +27,7 @@ class TestAdminTasks(unittest.TestCase):
     def testMakeNewDirs(self):
         self.assertEqual(admin_tasks.make_dirs(self.dirs_new), True)
 
-    def teardown():
+    def tearDown(self):
         os.rmdir(self.dirs_exist)
         os.rmdir(self.dirs_new)
 
