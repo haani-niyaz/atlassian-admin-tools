@@ -78,13 +78,12 @@ def get_filename(url):
 
 
 def download(url, path):
-
     os.chdir(path)
     file_name = get_filename(url)
+
     if not os.path.exists(file_name):
         try:
             resp = urllib2.urlopen(url)
-
             try:
                 fh = open(file_name, 'wb')
                 fh.write(resp.read())
@@ -94,9 +93,9 @@ def download(url, path):
                 fh.close()
         except (urllib2.URLError, urllib2.HTTPError), e:
             log.error("Failed to download %s with error: %s" % (url, str(e)))
-
     else:
-        log.warn("%s already exists." % file_name)
+        log.warn("%s already exists" % file_name)
+        return True
 
     return False
 
