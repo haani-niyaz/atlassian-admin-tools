@@ -1,25 +1,25 @@
-#! /usr/bin/env python
-import simplejson as json
+#!/usr/bin/env python
+
 import os
-import sys
+
+import simplejson as json
 
 
-def get_config(file):
-    if os.path.exists(file):
-        # Nesting required to use finally prior to python 2.5
-        try:
-            try:
-                fh = open(file, 'r')
-                config = json.load(fh)
-                return config
-            except IOError, e:
-                log.error('Unable to read yaml file: ' + str(e))
-        finally:
-            fh.close()
-
-    else:
-        print('Please ensure config file path is valid')
-        sys.exit(1)
-
-if __name__ == '__main__':
+class ConfigFileError(Exception):
+    """An error that occurs when reading a config file"""
     pass
+
+def read_config_file(file):
+    """Returns a dictionary of objects created from a JSON config file"""
+
+    if not os.path.exists(file):
+        raise ConfigFileError("Ensure config file path is valid")
+        # Nesting required to use finally prior to python 2.5 
+    try:
+        try:
+            fh = open(file, 'r')   
+            return json.load(fh)
+        except ValueError, e:
+            raise ConfigFileError("Configuration file has an error. %s while attempting to open %s" % (str(e),file))
+    finally:
+        fh.close()
