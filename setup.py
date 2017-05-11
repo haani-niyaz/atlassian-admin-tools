@@ -45,11 +45,14 @@ def invoke():
                 backup.create_backup_dir()
                 log.debug("Backup working directory is %s" %
                           backup.backup_working_dir)
-                is_shutdown = ProcessController(
-                    log, app_name).shutdown()
+                is_shutdown = ProcessController(log, app_name).shutdown()
                 if is_shutdown:
                     # Drop privileges to 'proteus' user
-                    admin_tasks.change_user()
+                    try:
+                        admin_tasks.change_user()
+                    except admin_tasks.AdminTasksError, e:
+                        log.error(str(e))
+                        sys.exit(1)   
 
                     backup.backup_app()
                     backup.backup_config()
