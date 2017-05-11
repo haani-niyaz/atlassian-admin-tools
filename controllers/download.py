@@ -1,12 +1,15 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
+
+import sys
 
 from utils import admin_tasks
-import sys
 
 
 class DownloadController(object):
+    """Controller responsible for handling all download operations"""
 
     def __init__(self, config, log):
+
         self.temp_dir = config['temp_dir']
         self.downloads = self._get_active_elements(config['downloads'])
         self.log = log
@@ -14,6 +17,7 @@ class DownloadController(object):
 
     def _get_active_elements(self, elements):
         """Returns a dict of elements where value is not None"""
+
         active_elements = {}
         for key, value in elements.iteritems():
             if value:
@@ -23,7 +27,6 @@ class DownloadController(object):
 
     def download_files(self):
 
-
         total = len(self.downloads)
 
         for index, link in enumerate(self.downloads.itervalues()):
@@ -32,16 +35,11 @@ class DownloadController(object):
             if admin_tasks.download(link, self.temp_dir):
                 self.files_downloaded.append(file_path)
                 self.log.info("File details: %s " %
-                          admin_tasks.get_file_details(file_path))
+                              admin_tasks.get_file_details(file_path))
             else:
                 sys.exit(1)
-
 
     def summary(self):
         self.log.debug("-- Download Summary --")
         for file_path in self.files_downloaded:
             self.log.info(admin_tasks.get_file_details(file_path))
-
-
-if __name__ == '__main__':
-    pass
