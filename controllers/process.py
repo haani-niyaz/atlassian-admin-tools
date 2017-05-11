@@ -6,6 +6,7 @@ from utils import admin_tasks
 
 
 class ProcessController(object):
+    """Controller responsible for handling all OS process operations"""
 
     def __init__(self, log, app_name=None):
         self.log = log
