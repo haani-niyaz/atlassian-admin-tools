@@ -34,12 +34,15 @@ class DownloadController(object):
             
             file_path = self.temp_dir + '/' + admin_tasks.get_filename(link)
             
-            if admin_tasks.download(link, self.temp_dir):
+            try:
+                admin_tasks.download(link, self.temp_dir)
+            except admin_tasks.AdminTasksError, e:
+                self.log.error(str(e))
+                sys.exit(1)
+            else:
                 self.files_downloaded.append(file_path)
                 self.log.info("File details: %s " %
                               admin_tasks.get_file_details(file_path))
-            else:
-                sys.exit(1)
 
     def summary(self):
         self.log.info("-- Download Summary --")

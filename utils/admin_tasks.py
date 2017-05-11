@@ -88,7 +88,9 @@ def get_filename(url):
 
 
 def download(url, path):
+    
     os.chdir(path)
+
     file_name = get_filename(url)
 
     if not os.path.exists(file_name):
@@ -98,16 +100,12 @@ def download(url, path):
                 fh = open(file_name, 'wb')
                 fh.write(resp.read())
                 log.info("Downloaded %s to %s", file_name, path)
-                return True
             finally:
                 fh.close()
         except (urllib2.URLError, urllib2.HTTPError), e:
-            log.error("Failed to download %s with error: %s" % (url, str(e)))
+            raise AdminTasksError("Download from \'%s\' failed with %s" % (url, str(e)))
     else:
-        log.warn("%s already exists" % file_name)
-        return True
-
-    return False
+        log.info("%s already exists" % file_name)
 
 
 def run_cmd(cmd):
