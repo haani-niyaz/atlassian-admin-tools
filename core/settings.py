@@ -15,7 +15,7 @@ def read_config_file(file):
 
     if not os.path.exists(file):
         raise ConfigFileError("Ensure config file path is valid")
-        # Nesting required to use finally prior to python 2.5
+    # Nesting required to use 'finally' prior to python 2.5
     try:
         try:
             fh = open(file, 'r')
