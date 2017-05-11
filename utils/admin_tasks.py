@@ -64,15 +64,15 @@ def set_ownership(path, user='proteus'):
 
 def set_permissions(path, permissions):
     """Set file permissions
-
+    
     Args:
         path         : Path to file
         permissions  : permissions are set as octal integer. Python automagically treats any 
-                        integer with a leading zero as octal.
+                       integer with a leading zero as octal.
     Returns:
         None
     Raises:
-        OSError: If file does not exist
+        AdminTaskError: Raise for OSError to be handled in controller
     """
     try:
         log.debug("Setting permissions %s for file %s" %
