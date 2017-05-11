@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
 """
 System admin tasks
@@ -64,7 +64,7 @@ def set_ownership(path, user='proteus'):
 
 def set_permissions(path, permissions):
     """Set file permissions
-    
+
     Args:
         path         : Path to file
         permissions  : permissions are set as octal integer. Python automagically treats any 

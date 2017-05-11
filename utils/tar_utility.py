@@ -35,7 +35,7 @@ def create_tar(dest_file, parent_dir, backup_dir):
         os.chdir(parent_dir)
         log.info("Creating tar %s from %s/%s" % (dest_file, parent_dir, backup_dir))
         tar = tarfile.open(dest_file, 'w:gz')
-        # Nesting required to use finally prior to python 2.5
+        # Nesting required to use 'finally' prior to python 2.5
         try:
             try:
                 tar.add(backup_dir)
