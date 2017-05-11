@@ -31,7 +31,9 @@ class DownloadController(object):
 
         for index, link in enumerate(self.downloads.itervalues()):
             self.log.info("Downloading %s of %s.." % (index+1, total))
+            
             file_path = self.temp_dir + '/' + admin_tasks.get_filename(link)
+            
             if admin_tasks.download(link, self.temp_dir):
                 self.files_downloaded.append(file_path)
                 self.log.info("File details: %s " %
@@ -40,6 +42,6 @@ class DownloadController(object):
                 sys.exit(1)
 
     def summary(self):
-        self.log.debug("-- Download Summary --")
+        self.log.info("-- Download Summary --")
         for file_path in self.files_downloaded:
             self.log.info(admin_tasks.get_file_details(file_path))
