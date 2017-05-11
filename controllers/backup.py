@@ -39,12 +39,13 @@ class BackupController(object):
                               (index+1, len(self.backup_dirs)))
 
                 dest_file = self.backup_working_dir + '/' + data['tar_file']
+                
                 try:
                     tar_utility.create_tar(
                         dest_file,
                         data['parent_dir'],
                         data['backup_dir'])
-                except tar_utility.TarFileError, e:
+                except tar_utility.TarUtilityError, e:
                     self.log.error(str(e))
                     sys.exit(1)
 
