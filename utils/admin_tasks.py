@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
 """
 System admin tasks
@@ -13,64 +13,74 @@ import pwd
 import re
 from shutil import copyfile
 
+
 log = logging.getLogger('atlassian-admin-tools')
 
 
+class AdminTasksError(Exception):
+    """An error that occurs when performing administrative operations"""
+    pass
+
+
 def make_dirs(dirs):
-    """
-    Create directories recursively.
-    """
-    if os.path.exists(dirs):
-        log.info("%s Directory already exists" % dirs)
-        return True
-    else:
-        try:
-            log.info("Creating %s directory" % dirs)
-            os.makedirs(dirs)
-            return True
-        except OSError, e:
-            if e.errno == errno.EACCES:
-                log.error('Must run as privileged user')
-            else:
-                raise
+    """Create directories recursively"""
 
-    return False
+    try:
+        log.debug("Creating %s directory" % dirs)
+        os.makedirs(dirs)
+    except OSError, e:
+        if e.errno == errno.EEXIST:
+            log.info("%s Directory already exists" % dirs)
+        else:
+            raise AdminTasksError(
+                "Backup directory creation failed with error %s" % str(e))
 
 
-def change_user(user='proteus'):
-    uid = pwd.getpwnam(user).pw_uid
-    gid = pwd.getpwnam(user).pw_gid
-    os.setegid(uid)
-    os.seteuid(gid)
-    log.debug("Running commands as %s user" % user)
+def change_user(user):
+
+    try:
+        uid = pwd.getpwnam(user).pw_uid
+        gid = pwd.getpwnam(user).pw_gid
+        os.setegid(uid)
+        os.seteuid(gid)
+        log.debug("Running commands as %s user" % user)
+    except KeyError, e:
+        raise AdminTasksError(
+            "Changing to user \'%s\' failed with error %s" % (user,str(e)) )
 
 
 def set_ownership(path, user='proteus'):
-    uid = pwd.getpwnam(user).pw_uid
-    gid = pwd.getpwnam(user).pw_gid
 
-    log.info("Setting %s ownership to %s:%s " % (path, user, user))
-    os.chown(path, uid, gid)
+    try:
+        uid = pwd.getpwnam(user).pw_uid
+        gid = pwd.getpwnam(user).pw_gid
+
+        log.debug("Setting %s ownership to %s:%s " % (path, user, user))
+        os.chown(path, uid, gid)
+    except KeyError, e:
+        raise AdminTasksError(
+            "Setting ownership failed with error %s" % str(e))
 
 
 def set_permissions(path, permissions):
-    '''
-    Set file permissions
+    """Set file permissions
 
     Args:
-    @path        : Path to file
-    @permissions : permissions are set as octal integer. Python automagically treats any 
-                   integer with a leading zero as octal.
-    '''
-
-    if os.path.exists(path):
-        log.info("Setting permissions %s for file %s" %
-                 (oct(permissions), path))
+        path         : Path to file
+        permissions  : permissions are set as octal integer. Python automagically treats any 
+                       integer with a leading zero as octal.
+    Returns:
+        None
+    Raises:
+        AdminTaskError: Raise for OSError to be handled in controller
+    """
+    try:
+        log.debug("Setting permissions %s for file %s" %
+                  (oct(permissions), path))
         os.chmod(path, permissions)
-        return True
-    else:
-        log.error("File does not exist.")
-        return False
+    except OSError, e:
+        raise AdminTasksError(
+            "Changing permissions failed with error %s" % str(e))
 
 
 def get_filename(url):
@@ -78,27 +88,24 @@ def get_filename(url):
 
 
 def download(url, path):
-
+    
     os.chdir(path)
+
     file_name = get_filename(url)
+
     if not os.path.exists(file_name):
         try:
             resp = urllib2.urlopen(url)
-
             try:
                 fh = open(file_name, 'wb')
                 fh.write(resp.read())
                 log.info("Downloaded %s to %s", file_name, path)
-                return True
             finally:
                 fh.close()
         except (urllib2.URLError, urllib2.HTTPError), e:
-            log.error("Failed to download %s with error: %s" % (url, str(e)))
-
+            raise AdminTasksError("Download from \'%s\' failed with %s" % (url, str(e)))
     else:
-        log.warn("%s already exists." % file_name)
-
-    return False
+        log.info("%s already exists" % file_name)
 
 
 def run_cmd(cmd):
@@ -155,15 +162,14 @@ def df_stats(fs):
     return False
 
 
-def copy_file(source, dest):
-    if os.path.exists(dest):
-        log.warn("%s already exists" % dest)
-        return None
-    elif os.path.exists(source):
-        copyfile(source, dest)
-        return True
+def copy_file(source_file, dest_file):
 
-    return False
-
-if __name__ == '__main__':
-    pass
+    if os.path.exists(dest_file):
+        log.warn("%s already exists" % dest_file)
+    else:
+        try:
+            copyfile(source_file, dest_file)
+            log.info("Backup of %s is done" % dest_file)
+        except OSError, e:
+            raise AdminTasksError(
+                "Copy operation failed with error %s" % str(e))

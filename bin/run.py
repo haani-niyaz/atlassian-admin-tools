@@ -1,7 +1,8 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
 import os
 import sys
+
 
 if os.getuid() != 0:
     print("Invalid usage. Script must be executed as a privileged user i.e: sudo ./run.py <options>")
@@ -14,4 +15,4 @@ sys.path.append(
 import setup
 
 if __name__ == '__main__':
-	setup.invoke()
+    setup.invoke()

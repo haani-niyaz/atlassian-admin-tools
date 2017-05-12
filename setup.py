@@ -1,6 +1,8 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
 import logging
+import sys
+
 from core import cmd_options
 from core import multi_logging
 from core import settings
@@ -10,7 +12,7 @@ from controllers.download import DownloadController
 from controllers.process import ProcessController
 
 
-def main():
+def invoke():
 
     # Setup option parser
     parser = cmd_options.main()
@@ -27,7 +29,11 @@ def main():
 
         if options.file:
             # Initialize if config file provided and valid
-            config = settings.get_config(options.file)
+            try:
+                config = settings.read_config_file(options.file)
+            except settings.ConfigFileError, e:
+                log.error(str(e))
+                sys.exit(1)   
 
             # backup, shutdown, process check can run if app_name and config file has been
             # initialized
@@ -39,15 +45,15 @@ def main():
                 backup.create_backup_dir()
                 log.debug("Backup working directory is %s" %
                           backup.backup_working_dir)
-                is_shutdown = ProcessController(
-                    log, app_name).shutdown()
-                if is_shutdown:
-                    # Drop privileges to 'proteus' user
-                    admin_tasks.change_user()
+                
+                ProcessController(log, app_name).shutdown()
 
-                    backup.backup_app()
-                    backup.backup_config()
-                    backup.summary()
+                # Drop privileges to application user
+                ProcessController(log).switch_to_app_user('proteus')
+
+                backup.backup_app()
+                backup.backup_config()
+                backup.summary()
 
             elif options.download:
                 download = DownloadController(config, log)
@@ -85,5 +91,3 @@ def main():
         parser.print_help()
 
 
-if __name__ == '__main__':
-    main()

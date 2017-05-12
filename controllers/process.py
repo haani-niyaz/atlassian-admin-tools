@@ -1,10 +1,12 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
 import sys
+
 from utils import admin_tasks
 
 
 class ProcessController(object):
+    """Controller responsible for handling all OS/app operations"""
 
     def __init__(self, log, app_name=None):
         self.log = log
@@ -26,16 +28,15 @@ class ProcessController(object):
             self.log.debug('Getting application process data')
             self.log.info('Application service has been shutdown')
             print("Command output: \n" + cmd_output)
-            return True
         else:
             self.log.error('Application service shutdown failed')
-            return False
+            sys.exit(1)
 
     def check_disk_space(self, required_disk_space, fs='/opt'):
         stats = admin_tasks.df_stats(fs)
         if stats:
             size, used, available = stats
-            # Remove 'G' from output
+            # Remove metric from output
             available = float(available[:-1])
             space_left = available - required_disk_space
 
@@ -57,7 +58,11 @@ class ProcessController(object):
             print("Command output: \n" + cmd_output)
         else:
             self.log.error("%s package was not found" % package)
+            sys.exit(1)
 
-
-if __name__ == '__main__':
-    pass
+    def switch_to_app_user(self, user):
+        try:
+            admin_tasks.change_user(user)
+        except admin_tasks.AdminTasksError, e:
+            self.log.error(str(e))
+            sys.exit(1)   

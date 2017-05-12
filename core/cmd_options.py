@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
 
 from optparse import OptionParser, OptionGroup
 
@@ -46,7 +46,3 @@ def main():
     parser.add_option_group(config_file_options)
 
     return parser
-
-
-if __name__ == '__main__':
-    main()
