@@ -6,7 +6,7 @@ from utils import admin_tasks
 
 
 class ProcessController(object):
-    """Controller responsible for handling all OS process operations"""
+    """Controller responsible for handling all OS/app operations"""
 
     def __init__(self, log, app_name=None):
         self.log = log
@@ -59,3 +59,10 @@ class ProcessController(object):
         else:
             self.log.error("%s package was not found" % package)
             sys.exit(1)
+
+    def switch_to_app_user(self, user):
+        try:
+            admin_tasks.change_user(user)
+        except admin_tasks.AdminTasksError, e:
+            self.log.error(str(e))
+            sys.exit(1)   

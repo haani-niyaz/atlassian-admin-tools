@@ -36,14 +36,14 @@ def make_dirs(dirs):
                 "Backup directory creation failed with error %s" % str(e))
 
 
-def change_user(user='deploy'):
+def change_user(user):
 
     try:
         uid = pwd.getpwnam(user).pw_uid
         gid = pwd.getpwnam(user).pw_gid
         os.setegid(uid)
         os.seteuid(gid)
-        self.log.debug("Running commands as %s user" % user)
+        log.debug("Running commands as %s user" % user)
     except KeyError, e:
         raise AdminTasksError(
             "Changing to user \'%s\' failed with error %s" % (user,str(e)) )
