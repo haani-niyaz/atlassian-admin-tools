@@ -46,7 +46,3 @@ def main():
     parser.add_option_group(config_file_options)
 
     return parser
-
-
-if __name__ == '__main__':
-    main()

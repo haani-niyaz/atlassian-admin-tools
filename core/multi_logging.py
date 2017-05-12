@@ -30,7 +30,3 @@ def main():
     # add the handlers to logger
     logger.addHandler(file_handler)
     logger.addHandler(console_handler)
-
-
-if __name__ == '__main__':
-    main()
