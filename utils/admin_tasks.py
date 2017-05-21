@@ -73,8 +73,7 @@ def set_permissions(path, permissions):
         AdminTaskError: Raise for OSError to be handled in controller
     """
     try:
-        LOG.debug("Setting permissions %s for file %s",
-                  (oct(permissions), path))
+        LOG.debug("Setting permissions %s for file %s", (oct(permissions), path))
         os.chmod(path, permissions)
     except OSError, e:
         raise AdminTasksError(
@@ -136,8 +135,8 @@ def yum_clean(repo):
     if os.path.exists("/etc/yum.repos.d/%s.repo" % repo):
         cmd = "/bin/bash -c  \"yum --disablerepo=* --enablerepo=%s clean all\" " % repo
         return run_cmd(cmd)
-    else:
-        return False
+
+    return False
 
 
 def yum_info(package, repo):
@@ -145,9 +144,9 @@ def yum_info(package, repo):
         cmd = "/bin/bash -c  \"yum --disablerepo=* --enablerepo=%s  info %s\" " % (
             repo, package)
         return run_cmd(cmd)
-    else:
-        LOG.error('Yum clean failed. Please check repo and retry.')
-        return False
+
+    LOG.error('Yum clean failed. Please check repo and retry.')
+    return False
 
 
 def df_stats(fs):
