@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-"""
-System admin tasks
+"""System admin tasks
 """
 
 import os
@@ -10,7 +9,6 @@ import urllib2
 import logging
 import subprocess
 import pwd
-import re
 from shutil import copyfile
 
 
@@ -153,12 +151,16 @@ def yum_info(package, repo):
 
 
 def df_stats(fs):
-    cmd = "df -h -P %s" % fs
+    # Return output in KB 
+    # Why not get in GB? because it is rounded up i.e: instead of 5.5GB you
+    # get 6GB.
+    cmd = "df -B KB -P %s" % fs
     haystack = run_cmd(cmd)
-    needle = r'(\d+\.\d+G)'
-    stats = re.findall(needle, haystack)
+    stats = haystack.split("\n")[1].split()[1:4]
     if stats:
-        return stats
+        # Remove 'KB' from return values and convert to GB
+        stats_in_gb = [ float(stat[:-2])/1024**2 for stat in stats ]
+        return stats_in_gb
     return False
 
 

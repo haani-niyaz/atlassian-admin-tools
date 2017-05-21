@@ -35,19 +35,18 @@ class ProcessController(object):
     def check_disk_space(self, required_disk_space, fs='/opt'):
         stats = admin_tasks.df_stats(fs)
         if stats:
-            size, used, available = stats
-            # Remove metric from output
-            available = float(available[:-1])
+            __, __, available = stats
+
             space_left = available - required_disk_space
 
             if space_left > 0.5:
-                self.log.info("%sG of disk space is available from %sG in %s" %
+                self.log.info("%.1fG of disk space is available from approximately %.1fG in %s" %
                               (required_disk_space, available, fs))
-            elif space_left >= 0 and space_left <= 0.5:
-                self.log.warning("Low disk space. Only %sG will be free from available space of %sG in %s." % (
+            elif space_left > 0 and space_left <= 0.5:
+                self.log.warning("Low disk space. Only %.1fG will be free from approximately available space of %.1fG in %s." % (
                     space_left, available, fs))
             else:
-                self.log.error("Not enough disk space. %sG is not available from avaiable space of %sG in %s." % (
+                self.log.error("Not enough disk space. %.1fG is not available from approximately avaiable space of %.1fG in %s." % (
                     required_disk_space, available, fs))
                 sys.exit(1)
 
@@ -65,4 +64,4 @@ class ProcessController(object):
             admin_tasks.change_user(user)
         except admin_tasks.AdminTasksError, e:
             self.log.error(str(e))
-            sys.exit(1)   
+            sys.exit(1)
