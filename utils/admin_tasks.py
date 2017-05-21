@@ -12,7 +12,7 @@ import pwd
 from shutil import copyfile
 
 
-log = logging.getLogger('atlassian-admin-tools')
+LOG = logging.getLogger('atlassian-admin-tools')
 
 
 class AdminTasksError(Exception):
@@ -24,11 +24,11 @@ def make_dirs(dirs):
     """Create directories recursively"""
 
     try:
-        log.debug("Creating %s directory" % dirs)
+        LOG.debug("Creating %s directory" % dirs)
         os.makedirs(dirs)
     except OSError, e:
         if e.errno == errno.EEXIST:
-            log.info("%s Directory already exists" % dirs)
+            LOG.info("%s Directory already exists" % dirs)
         else:
             raise AdminTasksError(
                 "Backup directory creation failed with error %s" % str(e))
@@ -41,7 +41,7 @@ def change_user(user):
         gid = pwd.getpwnam(user).pw_gid
         os.setegid(uid)
         os.seteuid(gid)
-        log.debug("Running commands as %s user" % user)
+        LOG.debug("Running commands as %s user" % user)
     except KeyError, e:
         raise AdminTasksError(
             "Changing to user \'%s\' failed with error %s" % (user,str(e)) )
@@ -53,7 +53,7 @@ def set_ownership(path, user='proteus'):
         uid = pwd.getpwnam(user).pw_uid
         gid = pwd.getpwnam(user).pw_gid
 
-        log.debug("Setting %s ownership to %s:%s " % (path, user, user))
+        LOG.debug("Setting %s ownership to %s:%s " % (path, user, user))
         os.chown(path, uid, gid)
     except KeyError, e:
         raise AdminTasksError(
@@ -73,7 +73,7 @@ def set_permissions(path, permissions):
         AdminTaskError: Raise for OSError to be handled in controller
     """
     try:
-        log.debug("Setting permissions %s for file %s" %
+        LOG.debug("Setting permissions %s for file %s" %
                   (oct(permissions), path))
         os.chmod(path, permissions)
     except OSError, e:
@@ -97,13 +97,13 @@ def download(url, path):
             try:
                 fh = open(file_name, 'wb')
                 fh.write(resp.read())
-                log.info("Downloaded %s to %s", file_name, path)
+                LOG.info("Downloaded %s to %s", file_name, path)
             finally:
                 fh.close()
         except (urllib2.URLError, urllib2.HTTPError), e:
             raise AdminTasksError("Download from \'%s\' failed with %s" % (url, str(e)))
     else:
-        log.info("%s already exists" % file_name)
+        LOG.info("%s already exists" % file_name)
 
 
 def run_cmd(cmd):
@@ -146,7 +146,7 @@ def yum_info(package, repo):
             repo, package)
         return run_cmd(cmd)
     else:
-        log.error('Yum clean failed. Please check repo and retry.')
+        LOG.error('Yum clean failed. Please check repo and retry.')
         return False
 
 
@@ -167,11 +167,11 @@ def df_stats(fs):
 def copy_file(source_file, dest_file):
 
     if os.path.exists(dest_file):
-        log.warn("%s already exists" % dest_file)
+        LOG.warn("%s already exists" % dest_file)
     else:
         try:
             copyfile(source_file, dest_file)
-            log.info("Backup of %s is done" % dest_file)
+            LOG.info("Backup of %s is done" % dest_file)
         except OSError, e:
             raise AdminTasksError(
                 "Copy operation failed with error %s" % str(e))
