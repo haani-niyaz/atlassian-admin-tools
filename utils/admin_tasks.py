@@ -24,14 +24,14 @@ def make_dirs(dirs):
     """Create directories recursively"""
 
     try:
-        LOG.debug("Creating %s directory" % dirs)
+        LOG.debug("Creating %s directory", dirs)
         os.makedirs(dirs)
     except OSError, e:
         if e.errno == errno.EEXIST:
-            LOG.info("%s Directory already exists" % dirs)
+            LOG.info("%s Directory already exists", dirs)
         else:
             raise AdminTasksError(
-                "Backup directory creation failed with error %s" % str(e))
+                "Backup directory creation failed with error %s", str(e))
 
 
 def change_user(user):
@@ -41,10 +41,10 @@ def change_user(user):
         gid = pwd.getpwnam(user).pw_gid
         os.setegid(uid)
         os.seteuid(gid)
-        LOG.debug("Running commands as %s user" % user)
+        LOG.debug("Running commands as %s user", user)
     except KeyError, e:
         raise AdminTasksError(
-            "Changing to user \'%s\' failed with error %s" % (user,str(e)) )
+            "Changing to user \'%s\' failed with error %s" % (user, str(e)))
 
 
 def set_ownership(path, user='proteus'):
@@ -53,11 +53,11 @@ def set_ownership(path, user='proteus'):
         uid = pwd.getpwnam(user).pw_uid
         gid = pwd.getpwnam(user).pw_gid
 
-        LOG.debug("Setting %s ownership to %s:%s " % (path, user, user))
+        LOG.debug("Setting %s ownership to %s:%s ", (path, user, user))
         os.chown(path, uid, gid)
     except KeyError, e:
         raise AdminTasksError(
-            "Setting ownership failed with error %s" % str(e))
+            "Setting ownership failed with error %s", str(e))
 
 
 def set_permissions(path, permissions):
@@ -65,7 +65,7 @@ def set_permissions(path, permissions):
 
     Args:
         path         : Path to file
-        permissions  : permissions are set as octal integer. Python automagically treats any 
+        permissions  : permissions are set as octal integer. Python automagically treats any
                        integer with a leading zero as octal.
     Returns:
         None
@@ -73,7 +73,7 @@ def set_permissions(path, permissions):
         AdminTaskError: Raise for OSError to be handled in controller
     """
     try:
-        LOG.debug("Setting permissions %s for file %s" %
+        LOG.debug("Setting permissions %s for file %s",
                   (oct(permissions), path))
         os.chmod(path, permissions)
     except OSError, e:
@@ -86,7 +86,7 @@ def get_filename(url):
 
 
 def download(url, path):
-    
+
     os.chdir(path)
 
     file_name = get_filename(url)
@@ -103,7 +103,7 @@ def download(url, path):
         except (urllib2.URLError, urllib2.HTTPError), e:
             raise AdminTasksError("Download from \'%s\' failed with %s" % (url, str(e)))
     else:
-        LOG.info("%s already exists" % file_name)
+        LOG.info("%s already exists", file_name)
 
 
 def run_cmd(cmd):
@@ -151,7 +151,7 @@ def yum_info(package, repo):
 
 
 def df_stats(fs):
-    # Return output in KB 
+    # Return output in KB
     # Why not get in GB? because it is rounded up i.e: instead of 5.5GB you
     # get 6GB.
     cmd = "df -B KB -P %s" % fs
@@ -159,7 +159,7 @@ def df_stats(fs):
     stats = haystack.split("\n")[1].split()[1:4]
     if stats:
         # Remove 'KB' from return values and convert to GB
-        stats_in_gb = [ float(stat[:-2])/1024**2 for stat in stats ]
+        stats_in_gb = [float(stat[:-2])/1024**2 for stat in stats]
         return stats_in_gb
     return False
 
@@ -167,11 +167,11 @@ def df_stats(fs):
 def copy_file(source_file, dest_file):
 
     if os.path.exists(dest_file):
-        LOG.warn("%s already exists" % dest_file)
+        LOG.warn("%s already exists", dest_file)
     else:
         try:
             copyfile(source_file, dest_file)
-            LOG.info("Backup of %s is done" % dest_file)
+            LOG.info("Backup of %s is done", dest_file)
         except OSError, e:
             raise AdminTasksError(
                 "Copy operation failed with error %s" % str(e))
