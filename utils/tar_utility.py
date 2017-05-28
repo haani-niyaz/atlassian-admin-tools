@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 
+"""Tar utility tasks"""
+
 import tarfile
 import os
 import logging
 
 
-log = logging.getLogger('atlassian-admin-tools')
+LOG = logging.getLogger('atlassian-admin-tools')
 
 
 class TarUtilityError(Exception):
-    """An error that occurs when performing tarfile operations"""
+    """An exception that occurs when performing tarfile operations"""
     pass
 
 
@@ -30,17 +32,17 @@ def create_tar(dest_file, parent_dir, backup_dir):
     """
 
     if os.path.isfile(dest_file):
-        log.warn("%s already exists" % dest_file)
+        LOG.warn("%s already exists", dest_file)
     else:
         os.chdir(parent_dir)
-        log.info("Creating tar %s from %s/%s" % (dest_file, parent_dir, backup_dir))
+        LOG.info("Creating tar %s from %s/%s" % (dest_file, parent_dir, backup_dir))
         tar = tarfile.open(dest_file, 'w:gz')
         # Nesting required to use 'finally' prior to python 2.5
         try:
             try:
                 tar.add(backup_dir)
-                log.info("%s creation successful" % dest_file)
-            except (OSError,IOError), e:
+                LOG.info("%s creation successful", dest_file)
+            except (OSError, IOError), e:
                 os.remove(dest_file)
                 raise TarUtilityError(
                     "Tar file creation failed with error  %s" % str(e))
