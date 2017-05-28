@@ -25,14 +25,14 @@ def make_dirs(dirs):
     """Create directories recursively"""
 
     try:
-        LOG.debug("Creating %s directory", dirs)
+        LOG.debug("Creating %s directory" % (dirs))
         os.makedirs(dirs)
     except OSError, e:
         if e.errno == errno.EEXIST:
             LOG.info("%s Directory already exists", dirs)
         else:
             raise AdminTasksError(
-                "Backup directory creation failed with error %s", str(e))
+                "Backup directory creation failed with error %s" % str(e))
 
 
 def change_user(user):
@@ -56,7 +56,7 @@ def set_ownership(path, user='proteus'):
         uid = pwd.getpwnam(user).pw_uid
         gid = pwd.getpwnam(user).pw_gid
 
-        LOG.debug("Setting %s ownership to %s:%s ", (path, user, user))
+        LOG.debug("Setting %s ownership to %s:%s " % (path, user, user))
         os.chown(path, uid, gid)
     except KeyError, e:
         raise AdminTasksError(
@@ -76,7 +76,7 @@ def set_permissions(path, permissions):
         AdminTaskError: Raise for OSError to be handled in controller
     """
     try:
-        LOG.debug("Setting permissions %s for file %s", (oct(permissions), path))
+        LOG.debug("Setting permissions %s for file %s" % (oct(permissions), path))
         os.chmod(path, permissions)
     except OSError, e:
         raise AdminTasksError(
@@ -101,7 +101,7 @@ def download(url, path):
             try:
                 fh = open(file_name, 'wb')
                 fh.write(resp.read())
-                LOG.info("Downloaded %s to %s", file_name, path)
+                LOG.info("Downloaded %s to %s" % (file_name, path))
             finally:
                 fh.close()
         except (urllib2.URLError, urllib2.HTTPError), e:
