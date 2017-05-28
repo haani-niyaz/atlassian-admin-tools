@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 
 """System admin tasks
@@ -16,7 +17,7 @@ LOG = logging.getLogger('atlassian-admin-tools')
 
 
 class AdminTasksError(Exception):
-    """An error that occurs when performing administrative operations"""
+    """An exception that occurs when performing administrative operations"""
     pass
 
 
@@ -35,6 +36,7 @@ def make_dirs(dirs):
 
 
 def change_user(user):
+    """Chage to specified user"""
 
     try:
         uid = pwd.getpwnam(user).pw_uid
@@ -48,6 +50,7 @@ def change_user(user):
 
 
 def set_ownership(path, user='proteus'):
+    """Set ownership of file"""
 
     try:
         uid = pwd.getpwnam(user).pw_uid
@@ -80,11 +83,13 @@ def set_permissions(path, permissions):
             "Changing permissions failed with error %s" % str(e))
 
 
-def get_filename(url):
-    return os.path.basename(url)
+def get_filename(path):
+    """Return the filename from given path"""
+    return os.path.basename(path)
 
 
 def download(url, path):
+    """Download files to destination path from source url"""
 
     os.chdir(path)
 
@@ -106,6 +111,12 @@ def download(url, path):
 
 
 def run_cmd(cmd):
+    """Executed shell command
+
+    Returns:
+        STDOUT of successful command execution
+    """
+
     p = subprocess.Popen(
         cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output = p.communicate()[0]
@@ -117,21 +128,44 @@ def run_cmd(cmd):
 
 
 def get_process(name):
+    """Get application process output
+
+    Returns:
+        STDOUT
+    """
+
     cmd = "/bin/bash -c \"ps -ef | grep -v grep | grep java | grep %s \" " % name
     return run_cmd(cmd)
 
 
 def get_file_details(path):
+    """List file details
+
+    Returns:
+        STDOUT
+    """
+
     cmd = "ls -lah %s" % path
     return run_cmd(cmd)
 
 
 def manage_service(name, operation):
+    """Start/Status/Stop service
+
+    Returns:
+        STDOUT
+    """
+
     cmd = "/bin/bash -c  \"/sbin/service %s %s \" " % (name, operation)
     return run_cmd(cmd)
 
 
 def yum_clean(repo):
+    """Clean yum repo
+
+    Returns:
+        STDOUT
+    """
     if os.path.exists("/etc/yum.repos.d/%s.repo" % repo):
         cmd = "/bin/bash -c  \"yum --disablerepo=* --enablerepo=%s clean all\" " % repo
         return run_cmd(cmd)
@@ -140,6 +174,12 @@ def yum_clean(repo):
 
 
 def yum_info(package, repo):
+    """Get RPM package info
+
+    Returns:
+        STDOUT
+    """
+
     if yum_clean(repo):
         cmd = "/bin/bash -c  \"yum --disablerepo=* --enablerepo=%s  info %s\" " % (
             repo, package)
@@ -150,6 +190,12 @@ def yum_info(package, repo):
 
 
 def df_stats(fs):
+    """Get volume size, used and available space
+
+    Returns:
+        List: volume size, used and available space
+    """
+
     # Return output in KB
     # Why not get in GB? because it is rounded up i.e: instead of 5.5GB you
     # get 6GB.
@@ -164,6 +210,7 @@ def df_stats(fs):
 
 
 def copy_file(source_file, dest_file):
+    """Copy file from source to destination"""
 
     if os.path.exists(dest_file):
         LOG.warn("%s already exists", dest_file)
