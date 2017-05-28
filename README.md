@@ -10,7 +10,6 @@
 3. [Usage - Configuration options and additional functionality](#usage)
 4. [Reference](#reference)
 5. [Limitations](#limitations)
-6. [Development - Guide for contributing to the module](#development)
 
 
 ## Description
@@ -171,21 +170,6 @@ on the success or failure of the command written to the log file.
 - Python 2.4 `optparse` module appears to have limited support for `<program> <command> <options> <args>`.
 - File system check is only for `/opt` (at the moment anyway)
 
-
-## Development
-
-### TO-DO
-
-- JSON validation as a program option
-- Clean up orphaned tar file if `tar.add()` fails ([#2](https://github.com/haani-niyaz/atlassian-admin-tools/issues/2))
-- Backup symlink directories ([#9](https://github.com/haani-niyaz/atlassian-admin-tools/issues/9))
-- Get the backup file name from the path instead of relying on the
-  name to be present in the config ([#16](https://github.com/haani-niyaz/atlassian-admin-tools/issues/16))
-#### Working On
-
-- Unit testing 
-- Documentation 
-- Non-zero exit codes for errors 
 
 
 
