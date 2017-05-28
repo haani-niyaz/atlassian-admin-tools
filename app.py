@@ -12,6 +12,8 @@ from controllers.download import DownloadController
 from controllers.process import ProcessController
 
 
+LOG = logging.getLogger('atlassian-admin-tools')
+
 def invoke():
 
     # Setup option parser
@@ -23,12 +25,8 @@ def invoke():
     # Initialize logging to stdout and file
     multi_logging.main()
 
-    log = logging.getLogger('atlassian-admin-tools')
 
-    if options.file:
-        parser.error(help_msg)
-
-    elif options.app:
+    if options.app:
         # Initialize if a valid app name is provided
         app_name = options.app
 
@@ -37,28 +35,28 @@ def invoke():
             try:
                 config = settings.read_config_file(options.file)
             except settings.ConfigFileError, e:
-                log.error(str(e))
+                LOG.error(str(e))
                 sys.exit(1)
 
             # Backup requires shutdown option
             if options.backup and options.shutdown:
 
-                backup = BackupController(config, log)
+                backup = BackupController(config, LOG)
                 backup.create_backup_dir()
-                log.debug("Backup working directory is %s" %
+                LOG.debug("Backup working directory is %s" %
                           backup.backup_working_dir)
 
-                ProcessController(log, app_name).shutdown()
+                ProcessController(LOG, app_name).shutdown()
 
                 # Drop privileges to application user
-                ProcessController(log).switch_to_app_user('proteus')
+                ProcessController(LOG).switch_to_app_user('proteus')
 
                 backup.backup_app()
                 backup.backup_config()
                 backup.summary()
 
             elif options.download:
-                download = DownloadController(config, log)
+                download = DownloadController(config, LOG)
                 download.download_files()
                 download.summary()
 
@@ -68,10 +66,10 @@ def invoke():
         # Options that can run without config file
 
         elif options.process:
-            ProcessController(log, app_name).get_process()
+            ProcessController(LOG, app_name).get_process()
 
         elif options.shutdown:
-            ProcessController(log, app_name).shutdown()
+            ProcessController(LOG, app_name).shutdown()
 
         # Error if app name and config file has been provided but no
         # switch
@@ -79,15 +77,17 @@ def invoke():
             parser.error(help_msg)
 
     elif options.disk_space:
-        ProcessController(log).check_disk_space(options.disk_space)
+        ProcessController(LOG).check_disk_space(options.disk_space)
 
     elif options.package_name:
         if args:
-            ProcessController(log).package_info(
+            ProcessController(LOG).package_info(
                 options.package_name, args[0])
         else:
             # Error if package name has been provided but no repo
             parser.error(help_msg)
+    elif options.file:
+        parser.error(help_msg)
 
     # show help
     else:
