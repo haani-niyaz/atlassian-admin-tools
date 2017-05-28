@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+"""Run program"""
+
 import os
 import sys
 
@@ -12,7 +14,7 @@ if os.getuid() != 0:
 sys.path.append(
     os.path.dirname(sys.path[0]))
 
-import setup
+import app
 
 if __name__ == '__main__':
-    setup.invoke()
+	app.invoke()

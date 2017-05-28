@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 
+"""Orchestrate backup tasks"""
+
 import sys
-import os
 
 from utils import admin_tasks
 from utils import tar_utility
 
 
 class BackupController(object):
-    """Controller responsible for handling all backup operations"""
+    """Backup operations control flow"""
 
     def __init__(self, config, log):
 
@@ -23,6 +24,10 @@ class BackupController(object):
         self.files_backed_up = []
 
     def create_backup_dir(self):
+        """Create backup directory and set ownership to default user
+            If a failure occurs, termnaite program with a non-zero exit 
+            code.
+        """
 
         try:
             admin_tasks.make_dirs(self.backup_working_dir)
@@ -32,6 +37,10 @@ class BackupController(object):
             sys.exit(1)
 
     def backup_app(self):
+        """Manages control flow to backup application (install) directory
+            and set file permissions. If a failure occurs, 
+            termnaite program with a non-zero exit code.
+        """
 
         for index, backup_metadata in enumerate(self.backup_dirs):
             for data in backup_metadata.itervalues():
@@ -39,7 +48,7 @@ class BackupController(object):
                               (index+1, len(self.backup_dirs)))
 
                 dest_file = self.backup_working_dir + '/' + data['tar_file']
-                
+
                 try:
                     tar_utility.create_tar(
                         dest_file,
@@ -61,6 +70,10 @@ class BackupController(object):
                               admin_tasks.get_file_details(dest_file))
 
     def backup_config(self):
+        """Manages control flow to backup sensitive config files
+            and set file permissions. If a failure occurs, 
+            termnaite program with a non-zero exit code.
+        """
 
         for index, files_metadata in enumerate(self.backup_files):
             for file_name, source_path in files_metadata.iteritems():
@@ -82,6 +95,7 @@ class BackupController(object):
                                   admin_tasks.get_file_details(dest_file))
 
     def summary(self):
+        """Backup summary"""
 
         self.log.info("-- Backup Summary --")
         for file_path in self.files_backed_up:
