@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+"""Application behaviour"""
+
 import logging
 import sys
 
@@ -43,7 +45,7 @@ def invoke():
 
                 backup = BackupController(config, LOG)
                 backup.create_backup_dir()
-                LOG.debug("Backup working directory is %s" %
+                LOG.debug("Backup working directory is %s",
                           backup.backup_working_dir)
 
                 ProcessController(LOG, app_name).shutdown()
