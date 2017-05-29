@@ -23,7 +23,7 @@ class ProcessController(object):
             self.log.info('Application process is running')
             print("Command output: \n" + cmd_output)
         else:
-            self.log.error('Application process is not running')
+            self.log.info('Application process is not running')
 
     def shutdown(self):
         """Manages control flow to shut down application process.
