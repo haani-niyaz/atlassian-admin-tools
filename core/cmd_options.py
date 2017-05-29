@@ -6,16 +6,16 @@ from optparse import OptionParser, OptionGroup
 def main():
 
     usage = """
-        sudo ./%prog <option>
-        sudo ./%prog <command> <option>
-        sudo ./%prog <command>  <sub-command> <option>
-
+        sudo bin/%prog <option> <arg>
+        sudo bin/%prog <option> <arg1> <arg2>
+        sudo bin/%prog <option> <arg> <option>
+        sudo bin/%prog <option1> <arg> <option2> <arg>
 
     examples:
-        sudo ./%prog -u 1                                 # Check if 1GB of disk space is available in /opt
-        sudo ./%prog --app jira -p                        # Check application process status          
-        sudo ./%prog --app jira --file /tmp/jira.json -bs # Shutdown application and perform backup
-
+        sudo bin/%prog -u 1                                 # Check if 1GB of disk space is available in /opt
+        sudo bin/%prog -i jre epel                          # Check if the package jre exists in epel yum repo
+        sudo bin/%prog --app jira -p                        # Check application process status          
+        sudo bin/%prog --app jira --file /tmp/jira.json -sb # Shutdown application and perform backup
         """
 
     parser = OptionParser(usage=usage)
