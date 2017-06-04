@@ -34,6 +34,18 @@
             "dbconfig.xml":"/mnt/jira/jira-home/dbconfig.xml"
          }
       ]
+   },
+   "rollback": {
+      "dirs": [
+         {
+            "home":{
+                  "tar_file":"jira-home-bout.tar.gz",
+                  "parent_dir":"/mnt/jira",
+                  "backup_dir":"jira-home"
+               }
+            }
+      ],
+      "files":[]
    }
 }
 

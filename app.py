@@ -8,7 +8,6 @@ import sys
 from core import cmd_options
 from core import multi_logging
 from core import settings
-from utils import admin_tasks
 from controllers.backup import BackupController
 from controllers.download import DownloadController
 from controllers.process import ProcessController
@@ -16,7 +15,9 @@ from controllers.process import ProcessController
 
 LOG = logging.getLogger('atlassian-admin-tools')
 
+
 def invoke():
+    """App logic"""
 
     # Setup option parser
     parser = cmd_options.main()
@@ -26,7 +27,6 @@ def invoke():
 
     # Initialize logging to stdout and file
     multi_logging.main()
-
 
     if options.app:
         # Initialize if a valid app name is provided
@@ -43,7 +43,8 @@ def invoke():
             # Backup requires shutdown option
             if options.backup and options.shutdown:
 
-                backup = BackupController(config, LOG)
+                backup = BackupController(config['base_backup_dir'], config['backup'],
+                                          config['CRQ'], LOG)
                 backup.create_backup_dir()
                 LOG.debug("Backup working directory is %s",
                           backup.backup_working_dir)
@@ -58,9 +59,27 @@ def invoke():
                 backup.summary()
 
             elif options.download:
+
                 download = DownloadController(config, LOG)
                 download.download_files()
                 download.summary()
+
+            elif options.keep:
+
+                backup = BackupController(config['base_backup_dir'], config['rollback'],
+                                          config['CRQ'], LOG)
+                backup.create_backup_dir()
+                LOG.debug("Backup working directory is %s",
+                          backup.backup_working_dir)
+
+                if options.shutdown:
+                    ProcessController(LOG, app_name).shutdown()
+
+                # Drop privileges to application user
+                ProcessController(LOG).switch_to_app_user('proteus')
+
+                backup.backup_app()
+                backup.summary()
 
             else:
                 parser.error(help_msg)

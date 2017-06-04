@@ -39,9 +39,12 @@ def main():
     config_file_options.add_option("-f", "--file", dest="file",
                                    help="Specify config file path")
     config_file_options.add_option("-b", action="store_true", dest="backup",
-                                   help="Backup application. Must use with shutdown option.")
+                                   help="Backup directories and files. Must use with shutdown option.")
     config_file_options.add_option("-d", action="store_true",
                                    dest="download", help="Download deployment files")
+    config_file_options.add_option("-k", action="store_true",
+                                   dest="keep", help="Save directories and files prior to rollback")
+
 
     parser.add_option_group(config_file_options)
 

@@ -11,21 +11,18 @@ from utils import tar_utility
 class BackupController(object):
     """Backup operations control flow"""
 
-    def __init__(self, config, log):
+    def __init__(self, base_backup_dir, backup_items, crq, log):
 
-        self.backup_working_dir = config[
-            'base_backup_dir'] + '/' + config['CRQ']
-        self.temp_dir = config['temp_dir']
-        self.backup_dirs = config['backup']['dirs']
-        self.backup_files = config['backup']['files']
-        self.downloads = config['downloads']
+        self.backup_working_dir = base_backup_dir + '/' + crq
+        self.backup_dirs = backup_items['dirs']
+        self.backup_files = backup_items['files']
         self.log = log
         self.files_downloaded = []
         self.files_backed_up = []
 
     def create_backup_dir(self):
         """Create backup directory and set ownership to default user
-            If a failure occurs, termnaite program with a non-zero exit 
+            If a failure occurs, termnaite program with a non-zero exit
             code.
         """
 
@@ -38,7 +35,7 @@ class BackupController(object):
 
     def backup_app(self):
         """Manages control flow to backup application (install) directory
-            and set file permissions. If a failure occurs, 
+            and sets file permissions. If a failure occurs,
             termnaite program with a non-zero exit code.
         """
 
@@ -71,7 +68,7 @@ class BackupController(object):
 
     def backup_config(self):
         """Manages control flow to backup sensitive config files
-            and set file permissions. If a failure occurs, 
+            and sets file permissions. If a failure occurs,
             termnaite program with a non-zero exit code.
         """
 
