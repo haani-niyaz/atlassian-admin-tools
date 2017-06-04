@@ -16,6 +16,7 @@ from controllers.process import ProcessController
 
 LOG = logging.getLogger('atlassian-admin-tools')
 
+
 def invoke():
 
     # Setup option parser
@@ -26,7 +27,6 @@ def invoke():
 
     # Initialize logging to stdout and file
     multi_logging.main()
-
 
     if options.app:
         # Initialize if a valid app name is provided
@@ -43,7 +43,8 @@ def invoke():
             # Backup requires shutdown option
             if options.backup and options.shutdown:
 
-                backup = BackupController(config, LOG)
+                backup = BackupController(config['base_backup_dir'], config[
+                                          'backup'], config['CRQ'], LOG)
                 backup.create_backup_dir()
                 LOG.debug("Backup working directory is %s",
                           backup.backup_working_dir)
