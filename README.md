@@ -50,10 +50,10 @@ Requires specifying application name. With these options you can:
 
 The program reads a json config file which specifies:
 
-- Backup directory
-- Files to backup
-- Directories to backup
+- Base backup directory
+- Files and directories to backup
 - Files to download for deployment
+- Files and directories to save prior to rollback
 
 A sample configuration has been provided in `sample/jira.json`
 
@@ -78,18 +78,18 @@ The program accepts an `app` and `file` as input with optional arguments.
 
 
 ```
-[atlassian-admin-tools]$ sudo bin/run.by
 usage: 
-    sudo bin/run.py <option>
-    sudo bin/run.py <command> <option>
-    sudo bin/run.py <command>  <sub-command> <option>
+        sudo bin/run.py <option> <arg>
+        sudo bin/run.py <option> <arg1> <arg2>
+        sudo bin/run.py <option> <arg> <option>
+        sudo bin/run.py <option1> <arg> <option2> <arg>
 
-
-examples:
-    sudo bin/run.py -u 1                                 # Check if 1GB of disk space is available in /opt
-    sudo bin/run.py --app jira -p                        # Check application process status          
-    sudo bin/run.py --app jira --file /tmp/jira.json -bs # Shutdown application and perform backup
-    
+    examples:
+        sudo bin/run.py -u 1                                 # Check if 1GB of disk space is available in /opt
+        sudo bin/run.py -i jre epel                          # Check if the package jre exists in epel yum repo
+        sudo bin/run.py --app jira -p                        # Check application process status          
+        sudo bin/run.py --app jira --file /tmp/jira.json -sb # Shutdown application and perform backup
+        
 
 options:
   -h, --help            show this help message and exit
@@ -111,8 +111,10 @@ options:
 
     -f FILE, --file=FILE
                         Specify config file path
-    -b                  Backup application. Must use with shutdown option.
+    -b                  Backup directories and files. Must use with shutdown
+                        option.
     -d                  Download deployment files
+    -k                  Save directories and files prior to rollback
 ```
 
 
